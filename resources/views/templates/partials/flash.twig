@@ -1,0 +1,13 @@
+{% if flash.getMessage('info') %}
+	<div class="ui info message">
+	  <i class="close icon"></i>
+	  <p>{{ flash.getMessage('info') | first }}</p>
+	</div>
+{% endif %}
+
+{% if flash.getMessage('error') %}
+	<div class="ui error message">
+	  <i class="close icon"></i>
+	  <p>{{ flash.getMessage('error') | first }}</p>
+	</div>
+{% endif %}

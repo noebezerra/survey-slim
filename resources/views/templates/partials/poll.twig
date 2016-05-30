@@ -1,0 +1,62 @@
+{% if flash.getMessage('poll') %}
+
+	<!-- modal request poll -->
+	<div class="ui small first basic modal">
+		<div class="ui icon header">
+			<i class="archive icon"></i>
+			Request Poll?
+		</div>
+		<div class="content">
+			<center>
+				<h3>You want to participate in a poll?</h3>
+				* You have only one chance to answer
+			</center>
+		</div>
+		<div class="actions">
+			<!-- <form class="ui form" action="" method="GET"> -->
+				<button type="submit" class="ui red basic cancel inverted button" name="nopoll" id="nopoll">
+					<i class="remove icon"></i>
+					No
+				</button>
+				<button class="ui green ok inverted button" name="yespoll" id="yespoll">
+					<i class="checkmark icon"></i>
+					Yes
+				</button>
+			<!-- </form>	 -->
+		</div>
+	</div>
+	<!-- poll questions -->
+	<div class="ui second basic modal">
+		<div class="header">
+			Modal #2
+		</div>
+		<div class="content">
+			<div class="description">
+				<form action="ui form" method="GET">
+					<div class="ui grid" id="perguntas">
+						{% for key, value in _context %}
+							{% if value.question != '' %}
+								<div class="thirteen wide column">
+									<h3>{{ value.question }}</h3>
+								</div>
+								<div class="five wide column stars">
+									<div class="stars-default" id="p{{ key }}"><input type="hidden" class="ui submit" name"rating" id="rating{{key}}"/></div>
+									{# for i in 1..5 #}
+										<!-- <i class="empty large star icon star{{ key }}{{ i }}" value="{{ i }}"></i> -->
+									{# endfor #}
+								</div>
+							{% endif %}
+						{% endfor %}						
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="actions">
+			<div class="ui approve button" name="save">
+				<i class="checkmark icon"></i>
+				Send
+			</div>
+		</div>
+	</div> 
+
+{% endif %}

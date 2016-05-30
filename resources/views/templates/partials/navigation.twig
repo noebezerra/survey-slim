@@ -1,0 +1,31 @@
+<div class="ui attached stackable blue menu">
+  <div class="ui container">
+      
+    <a class="active item" href="{{ path_for('home') }}">Home </a>
+    <a class="item">Messages </a>
+    <a class="item">Amigos </a>
+    <div class="right menu">
+      
+      {% if auth.check %}
+
+        <div class="ui simple dropdown item">
+          {{ auth.user.name }}
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item"><i class="edit icon"></i> Edit Profile</a>
+            <a class="item"><i class="globe icon"></i> Choose Language</a>
+            <a class="item" href="{{ path_for('auth.password.change') }}" ><i class="settings icon"></i> Account Settings</a>
+          </div>
+        </div>
+        <a class="ui item" href="{{ path_for('auth.signout') }}">Sair </a>
+
+      {% else %}
+      
+        <a class="item" href="{{ path_for('auth.signin') }}">Login</a>
+        <a class="item" href="{{ path_for('auth.signup') }}">Sign up</a>
+        
+      {% endif %}
+
+    </div>
+  </div>
+</div>

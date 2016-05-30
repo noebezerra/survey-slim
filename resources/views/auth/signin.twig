@@ -1,0 +1,43 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+
+	<div class="ui middle aligned center aligned grid">
+		<div class="column">
+			<h2 class="ui teal image header">
+				<img src="../img/logo.png" class="image">
+				<div class="content">
+				  Log-in to your account
+				</div>
+			</h2>
+			<form class="ui large form error" action="{{ path_for('auth.signin') }}" method="post">
+				<div class="ui stacked segment">
+					<div class="field {{ errors.email ? 'error' : '' }}">
+						<div class="ui left icon input">
+							<i class="user icon"></i>
+							<input name="email" id="email" placeholder="E-mail address" type="email" value="{{ old.email }}">
+						</div>
+					</div>
+					<div class="field  {{ errors.password ? 'error' : '' }}">
+						<div class="ui left icon input">
+							<i class="lock icon"></i>
+							<input type="password" name="password" id="password" placeholder="Password">
+						</div>
+					</div>
+					<button class="ui fluid large teal button" type="submit">Login</button>
+				</div>
+				
+				<div class="ui error message"></div>
+				
+
+				{{ csrf.field | raw }}
+			</form>
+
+			<div class="ui message">
+				New to us? <a href="#">Sign Up</a>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
+

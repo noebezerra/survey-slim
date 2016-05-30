@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Codecourse</title>
+	<link rel="stylesheet" href="{{ base_url() }}/css/semantic.min.css" />
+    <link rel="stylesheet" href="{{ base_url() }}/css/icon.min.css" />
+  	<link rel="stylesheet" href="{{ base_url() }}/css/main.css" />
+
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
+
+	<style type="text/css">
+	  body {
+	    /*background-color: #DADADA;*/
+	  }
+	  body.grid {
+	    height: 100%;
+	  }
+	  .image {
+	    margin-top: -100px;
+	  }
+	  .column {
+	    max-width: 450px;
+	  }
+      .star {
+        cursor: pointer;
+      }
+	</style>
+</head>
+
+
+<body>
+
+
+    {% include 'templates/partials/navigation.twig' %}
+    <div class="ui segment">
+        <div class="ui container-fluid">
+            {% include 'templates/partials/flash.twig' %}
+        
+			{% block content %}{% endblock %}
+
+		</div>
+	</div>
+	   
+    
+
+	<script src="{{ base_url() }}/js/jquery-2.2.3.min.js"></script>
+    <script src="{{ base_url() }}/js/semantic.min.js"></script>     
+    <script src="{{ base_url() }}/js/star-rating.min.js"></script>  
+  	<script src="{{ base_url() }}/js/changepoll.js"></script> 	
+
+	
+	<script>
+        // $(document).ready(function() {
+        //     $('.ui.form').form({
+        //         fields: {
+        //             name: {
+        //                 identifier  : 'name',
+        //                 rules: [{
+        //                     type   : 'empty',
+        //                     prompt : 'Please enter your name'
+        //                 }]
+        //             },
+        //             email: {
+        //                 identifier  : 'email',
+        //                 rules: [{
+        //                     type   : 'empty',
+        //                     prompt : 'Please enter your e-mail'
+        //                 }, {
+        //                     type   : 'email',
+        //                     prompt : 'Please enter a valid e-mail'
+        //                 }]
+        //             },
+        //             password: {
+        //                 identifier  : 'password',
+        //                 rules: [{
+        //                     type   : 'empty',
+        //                     prompt : 'Please enter your password'
+        //                 }, {
+        //                     type   : 'length[6]',
+        //                     prompt : 'Your password must be at least 6 characters'
+        //                 }]
+        //             }
+        //         }
+        //     });
+        // });
+/*****************************************************
+************************ Modal Poll - survey
+*/
+        // fechamento das mensagens de alertas
+        $('.message .close').on('click', function() {
+            $(this).closest('.message').transition('fade');
+        });
+        
+        // ativa multiplos modais
+        $('.basic.modal').modal({
+            allowMultiple: false 
+        });
+        // attach events to buttons ------- segundo modal
+        $('.second.modal').modal('setting', 'closable', false).modal('attach events', '.first.modal .ok');
+        // show first now
+        $('.first.modal').modal('setting', 'closable', false).modal('show');
+
+/*****************************************************
+************************ Coloring stars
+*/
+        // colorir estrelas
+        // var indice;
+        // var indexAtual;
+        // var clickstar;
+        // $('.stars').mouseover(function(e) {
+        //     // capturar id da classe stars
+        //     indice = e.target.id;
+        // });
+        // $('.star').mouseover(function(e) {
+        //     indexAtual = $('.star').index(this);
+        //     // se for maior que 5
+        //     if (indexAtual+1 > 5) {
+        //         if (indexAtual+1 > 10) {
+
+        //         }
+        //         // ex: aux = 7 - 5 aux = 2
+        //         var aux = indexAtual - 5;
+        //         // indice = 2
+        //         indexAtual = aux;
+        //     }
+
+        //     // percorrendo estrelas
+        //     for(var i=1; i <= indexAtual + 1 ; i++){
+        //         console.log('.star'+indice+i);
+        //         $('.star'+indice+i).addClass('yellow').removeClass('empty');
+        //     }
+        // });
+        // $('.star').mouseout(function() {
+        //     // mouse fora volta as classes iniciais
+        //     $('.star').removeClass('yellow').addClass('empty');
+        // });
+/*  
+        $('.star').click(function(e) {
+            switch (indexAtual+1){
+                case 1:
+                    $('.star01').addClass('yellow').removeClass('empty');
+                break;
+                case 2:
+                    $('.star01').addClass('yellow').removeClass('empty');
+                    $('.star02').addClass('yellow').removeClass('empty');
+                break;
+                case 3:
+                    $('.star01').addClass('yellow').removeClass('empty');
+                    $('.star02').addClass('yellow').removeClass('empty');
+                    $('.star03').addClass('yellow').removeClass('empty');
+                break;
+                case 4:
+                    $('.star01').addClass('yellow').removeClass('empty');
+                    $('.star02').addClass('yellow').removeClass('empty');
+                    $('.star03').addClass('yellow').removeClass('empty');                
+                    $('.star04').addClass('yellow').removeClass('empty');                
+                break;
+                case 5:
+                    $('.star01').addClass('yellow').removeClass('empty');
+                    $('.star02').addClass('yellow').removeClass('empty');
+                    $('.star03').addClass('yellow').removeClass('empty');
+                    $('.star04').addClass('yellow').removeClass('empty');
+                    $('.star05').addClass('yellow').removeClass('empty');
+                break;
+            }
+        });*/
+
+/*******************************************************
+********************* Bootstrap star rating - aptado para Semantic-ui 
+*/
+//the $(document).ready() function is down at the bottom
+
+(function ( $ ) {
+ 
+    $.fn.rating = function( method, options ) {
+        method = method || 'create';
+        // This is the easiest way to have default options.
+        var settings = $.extend({
+            // These are the defaults.
+            limit: 5,
+            value: 0,
+            glyph: "large star icon", // name icon
+            coloroff: "gray",
+            coloron: "yellow",
+            //size: "2.0em",
+            cursor: "pointer", // pointer
+            onClick: function () {},
+            endofarray: "idontmatter"
+        }, options );
+        var style = "";
+        //style = style + "font-size:" + settings.size + "; ";
+        style = style + "color:" + settings.coloroff + "; ";
+        style = style + "cursor:" + settings.cursor + "; ";
+    
+
+        
+        if (method == 'create')
+        {
+            //this.html('');    //junk whatever was there
+            
+            //initialize the data-rating property
+            this.each(function(){
+                attr = $(this).attr('data-rating');
+                if (attr === undefined || attr === false) { $(this).attr('data-rating',settings.value); }
+            })
+            
+            //bolt in the glyphs
+            for (var i = 0; i < settings.limit; i++)
+            {
+                this.append('<i data-value="' + (i+1) + '" class="ratingicon ' + settings.glyph + '" id="star"'+i+'" style="' + style + '" aria-hidden="true"></i>');
+            }
+            
+            //paint
+            this.each(function() { paint($(this)); });
+
+        }
+        if (method == 'set')
+        {
+            this.attr('data-rating',options);
+            this.each(function() { paint($(this)); });
+        }
+        if (method == 'get')
+        {
+            return this.attr('data-rating');
+        }
+        //register the click events
+        this.find("i.ratingicon").click(function() {
+            rating = $(this).attr('data-value')
+            $(this).parent().attr('data-rating',rating);
+            paint($(this).parent());
+            settings.onClick.call( $(this).parent() );
+        })
+        function paint(div)
+        {
+            rating = parseInt(div.attr('data-rating'));
+            div.find("input").val(rating);  //if there is an input in the div lets set it's value
+            div.find("i.ratingicon").each(function(){    //now paint the stars
+                
+                var rating = parseInt($(this).parent().attr('data-rating'));
+                var value = parseInt($(this).attr('data-value'));
+                if (value > rating) { $(this).css('color',settings.coloroff); }
+                else { $(this).css('color',settings.coloron); }
+            })
+        }
+
+    };
+ 
+}( jQuery ));
+
+var pointStar = [];
+var qtdperguntas;
+$('#yespoll').click(function(e) {
+    // var pointStar = [];
+    qtdperguntas = document.getElementById('perguntas').getElementsByTagName('input');
+    // for (var i = 1; i <= qtdperguntas; i++) {
+    //     var pergunta{i};    
+    // };
+    qtdperguntas = qtdperguntas.length;
+    $(".stars-default").rating(
+        'create',{
+            coloron:'gold',
+            onClick:function(e){ 
+                for (var i = 0; i < qtdperguntas; i++) {
+                   pointStar[i] = $('#rating'+i).val();
+                }
+                console.log(pointStar);
+            }
+        }
+    );   
+});
+
+$('.stars-default').click(function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: '../app/Controllers/Poll.php',
+        type: 'GET',
+        dataType: 'html',
+        data: {valor: pointStar, qtdperguntas: qtdperguntas},
+    })
+    .done(function(data) {
+        console.log(data);
+    })
+    .fail(function() {
+        console.log("error");
+    })
+});
+
+
+  </script>
+</body>
+
+</html>
