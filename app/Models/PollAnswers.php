@@ -11,10 +11,11 @@
 		
 		protected $table = 'poll_answers';
 
-		protected $fillable = array('id_user', 'id_poll_question', 'answers');
+		public $timestamps = false;
+
+		protected $fillable = array('id_user', 'id_question', 'answers');
 
 	}
-
 
 
 ?>

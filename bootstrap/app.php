@@ -12,11 +12,13 @@
 		'settings' => [
 			'displayErrorDetails' => true,
 			'addContentLengthHeader' => false,
-			
+			// Slim Settings
+		    'determineRouteBeforeAppMiddleware' => true,
+		    
 			'db' => [
 				'driver'    => 'mysql',		 
 				'host'      => 'localhost',		 
-				'database'  => 'survey',		 
+				'database'  => 'surveytwo',		 
 				'username'  => 'root',		 
 				'password'  => 'root',		 
 				'charset'   => 'utf8',		 
@@ -83,8 +85,8 @@
 		return new \App\Controllers\HomeController($container);
 	};
 
-	$container['Poll'] = function($container) {
-		return new \App\Controllers\Poll($container);
+	$container['PollController'] = function($container) {
+		return new \App\Controllers\PollController($container);
 	};
 
 	$container['AuthController'] = function($container) {
@@ -93,6 +95,10 @@
 
 	$container['PasswordController'] = function($container) {
 		return new \App\Controllers\Auth\PasswordController($container);
+	};
+
+	$container['AdmPollController'] = function($container) {
+		return new \App\Controllers\Auth\AdmPollController($container);
 	};
 
 	$container['csrf'] = function($container) {

@@ -4,7 +4,8 @@
 
 
 	use App\Models\User;
-	use App\Models\Poll;
+	use App\Models\PollQuestions;
+	use App\Models\Polls;
 
 	use Slim\Views\Twig as View;
 
@@ -17,8 +18,11 @@
 
 		public function Index($request, $response) {
 
-			$allpoll = Poll::all('question');
-			$_context = json_decode($allpoll, true);
+			$allpolls = Polls::all();
+			$_context = json_decode($allpolls, true);
+			
+			// $allpoll = PollQuestions::all('question');
+			// $_context += json_decode($allpoll, true);
 
 			return $this->view->render($response, 'home.twig', $_context);
 
@@ -47,6 +51,21 @@
 			}
 
 		}
+
+		public function postPoll() {
+			$qtdperguntas = $_GET['qtdperguntas'];
+			$result = '[';
+			for ($i=0; $i < $qtdperguntas; $i++) { 
+				if ($i < $qtdperguntas - 1) {
+					$result .= '"'.$_GET['valor'][$i].'",';
+				} else {
+					$result .= '"'.$_GET['valor'][$i].'"';
+				}
+			}
+			$result .= ']';
+			echo $qtdperguntas.' '.$result;
+		}
+
 
 		// public function poll($request, $response) {
 		// 	return $this->view->render($response, 'poll.twig');

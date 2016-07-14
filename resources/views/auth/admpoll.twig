@@ -1,0 +1,47 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+	<div class="ui container" ng-controller="ListSurvey as Hello">
+		<button class="ui inverted green button" id="new-survey"><i class="plus icon"></i>NEW SURVEY</button>
+		<label for="">Busca: <input type="text" ng-model="searchUser" placeholder="Pesquisar"></label>
+		{[{ Hello.message }]}
+		{{ dump(_context) }}
+		<div class="ui styled fluid accordion">
+			{% for key, value in _context %}
+				{% if value.poll != '' %}
+					<div class="title">
+						<span class="trigger accordion-adm" id="accordion{{ value.id }}">
+							<i class="dropdown icon"></i> {{ value.poll }} - <span class="ui right floated" style="color: green">OPEN</span>
+						</span>
+						<div class="ui right floated icon mini buttons">
+							<button class="ui yellow button edit-survey"><i class="write icon"></i> Editar</button>
+							<button class="ui red button"><i class="trash outline icon"></i> Excluir</button>
+						</div>
+					</div>
+					<div class="content">
+						<p class="transition hidden description">Description: {{ value.description }}</p>
+							
+  						<div class="timeelinee"></div>
+				    </div>
+				    {% endif %}
+			{% endfor %}
+		</div>
+	</div>
+
+
+	{{ "now" | date("d/m/Y") }}
+	
+	{{ date().timestamp }}
+	{{ date().format('U') }}	
+	{{ 'now'|date('U') }}
+	{% set dateTime = date(article.date) %}
+<span class="day">{{ dateTime | date('d') }}</span>
+<span class="month">{{ dateTime | date('F') }}</span>
+<span class="year">{{ dateTime | date('Y') }}</span>
+
+
+
+
+	{% include 'templates/partials/basicmodal.twig' %}
+
+{% endblock %}

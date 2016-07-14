@@ -2,7 +2,82 @@
 
 {% block content %}
 	
-	<form class="ui form error" action="{{ path_for('auth.signup') }}" method="post" autocomplete="off">
+	<div id="goabout">
+		<div class="ui container">
+			<div class="section">
+			  <!--   Icon Section   -->
+			  <div class="ui stackable equal width grid">
+			    <div class="column">
+					<div class="ui center aligned basic segment">
+						<i class="huge mobile icon"></i>
+						<h2 class="center brown-text"><i class="material-icons">Responsive Design</i></h2>
+		        		<p class="light">Sistema sensível subjacente em todas as platafomas, acesse de seu ceular, tablet ou desktop.</p>
+					</div>
+			    </div>
+			    <div class="column">
+		      		<div class="ui center aligned basic segment">
+						<i class="huge help icon"></i>
+						<h2 class="center brown-text"><i class="material-icons">Survey</i></h2>
+						<p class="light">Sistema desenvolvido para realização de enquetes simples utilizando metódo de votação por 'estrelinhas'... Clicou, Votou! <em>=D</em></p>
+					</div>
+			    </div>
+			    <div class="column">
+			        <div class="ui center aligned basic segment">
+						<i class="huge code icon"></i>
+						<h2 class="center brown-text"><i class="material-icons">Open Source</i></h2>
+						<p class="light">Amamos códigos, principalmente quando podemos vê-los! Acreditamos que todo conhecimento deve ser compartilhado <em> <3 </em></p>
+						<p class="ligth">Psiu! Você pode acessar nosso código no <a target="_blank" href="https://github.com/noebezerra/survey-slim">github</a>.</p>
+					</div>
+			    </div>
+			  </div>
+			</div>
+		</div>
+	</div>
+	<div class="division">
+		<hr class="dotted line">
+		<hr class="line">
+	</div>
+	<div id="gosignup">
+		<div class="ui container">
+			<h3>CADASTRE - SE</h3>
+			<form class="ui form error" action="{{ path_for('auth.signup') }}" method="post" autocomplete="off">
+			    <div class="field {{ errors.name ? 'error' : '' }}">
+			        <label>Name</label>
+			        <input name="name" id="name" placeholder="Your name" type="text" value="{{ old.name }}">
+			    </div>
+			    <div class="field {{ errors.email ? 'error' : '' }}">
+			        <label>Email</label>
+			        <input name="email" id="email" placeholder="E-mail address" type="email" value="{{ old.email }}">
+			    </div>
+			    <div class="field {{ errors.password ? 'error' : '' }}">
+			        <label>Password</label>
+			        <input name="password" id="password" type="password">
+			    </div>
+			    <button class="ui button" type="submit">Sign up</button>
+			    
+			    {{ csrf.field | raw }}
+
+			    {% if errors %}
+			    <div class="ui error message">
+			        <ul class="ui list">
+			            {% if errors.name %}
+			                <li>{{ errors.name | first }}</li>  
+			            {% endif %}
+			            {% if errors.email %}
+			                <li>{{ errors.email | first }}</li> 
+			            {% endif %}
+			            {% if errors.password %}
+			                <li>{{ errors.password | first }}</li>  
+			            {% endif %}     
+			        </ul>
+			    </div>
+			    {% endif %}
+			</form>
+		</div>
+	</div>
+
+	
+	<!-- <form class="ui form error" action="{{ path_for('auth.signup') }}" method="post" autocomplete="off">
 		<div class="field {{ errors.name ? 'error' : '' }}">
 			<label>Name</label>
 			<input name="name" id="name" placeholder="Your name" type="text" value="{{ old.name }}">
@@ -18,7 +93,7 @@
 		<button class="ui button" type="submit">Sign up</button>
 		
 		{{ csrf.field | raw }}
-
+	
 		{% if errors %}
 		<div class="ui error message">
 			<ul class="ui list">
@@ -34,7 +109,7 @@
 			</ul>
 		</div>
 		{% endif %}
-	</form>
+	</form> -->
 
 {% endblock %}
 

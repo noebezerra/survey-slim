@@ -6,10 +6,12 @@
 	use App\Models\Poll;
 
 
+	$app->any('/poll/pollanswers', 'PollController:postPollAnswers');
+	$app->any('/poll/pollquestions', 'PollController:getPollQuestions');
+	
 	$app->group('', function() {
 
 		$this->get('/', 'HomeController:index')->setName('home');
-		$this->post('/', 'HomeController:postChangePoll');
 
 	})->add(new GuestMiddleware($container));
 	
@@ -19,7 +21,10 @@
 	$app->get('/auth/signin', 'AuthController:getSignIn')->setName('auth.signin');
 	$app->post('/auth/signin', 'AuthController:postSignIn');
 
-	
+	$app->get('/adm', 'AdmPollController:index');	
+	$app->any('/adm/pollaccordion', 'AdmPollController:getQuestAccordion');
+	$app->any('/adm/pollaccordion/linepct', 'AdmPollController:getPctAccordion');
+	$app->any('/adm/newsurvey', 'AdmPollController:postNewSurvey');
 
 	$app->group('', function() {
 		

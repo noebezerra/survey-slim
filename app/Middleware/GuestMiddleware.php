@@ -15,7 +15,7 @@
 			// check if the user is not signed in
 			if (!$this->container->auth->check()) {
 				// redirect
-				return $response->withRedirect($this->container->router->pathFor('auth.signin'));
+				return $response->withRedirect($this->container->router->pathFor('auth.signup'));
 
 			}
 

@@ -1,6 +1,81 @@
-<div class="ui attached stackable blue menu">
-  <div class="ui container">
-      
+{% if auth.check %}
+  <div class="ui secondary inverted top large pointing menu loged">
+    <div class="ui container">
+      <div class="left item">
+        <a href="#" class="toc item"><i class="sidebar icon"></i> Menu</a>
+        <img src="{{ base_url() }}/img/surveylogobranco.png" alt="Survey">
+      </div>
+      <div class="rigth item">
+        <!-- menu bar -->
+       <!-- loged -->
+        <a class="item" href="#">Home</a>
+        <div class="ui simple dropdown item">
+          {{ auth.user.name }}
+          <i class="dropdown icon"></i>
+          <div class="menu">
+            <a class="item"><i class="edit icon"></i> Edit Profile</a>
+            <a class="item"><i class="globe icon"></i> Choose Language</a>
+            <a class="item" href="{{ path_for('auth.password.change') }}" ><i class="settings icon"></i> Account Settings</a>
+          </div>
+        </div>
+        <a class="ui item" href="{{ path_for('auth.signout') }}">Sair </a>
+        </div>
+    </div>
+  </div>
+{% else %}
+  <div class="ui vertical aligned center landing segment inverted">
+    <div class="transbg">
+      <div class="ui container">
+        <!-- menu bar -->
+        <div class="ui secondary inverted top large pointing menu">
+          <div class="left item">
+            <a href="#" class="toc item"><i class="sidebar icon"></i> Menu</a>
+            <img src="{{ base_url() }}/img/surveylogobranco.png" alt="Survey">
+          </div>
+          <div class="rigth item">
+            <!-- menu bar -->
+            <!-- not loged -->
+            <a class="active item" href="#">Home</a>
+            <a class="item" href="#goabout">About</a>
+            <div class="ui buttons">
+              <a class="ui button black" href="#gosignin"><i class="sign in icon"></i>Login</a>
+              <div class="or"></div>
+              <a class="ui button green" href="#gosignup"><i class="users icon"></i>Sign Up</a>
+            </div>
+          </div>
+        </div>
+        <!-- form login -->
+        <div class="login" id="#gosignin">
+          <form class="ui large form error" action="{{ path_for('auth.signin') }}" method="post">
+            <div class="ui stacked">
+              <div class="field {{ errors.email ? 'error' : '' }}">
+                <div class="ui left icon input">
+                  <i class="user icon"></i>
+                  <input name="email" id="email" placeholder="E-mail address" type="email" value="{{ old.email }}">
+                </div>
+              </div>
+              <div class="field  {{ errors.password ? 'error' : '' }}">
+                <div class="ui left icon input">
+                  <i class="lock icon"></i>
+                  <input type="password" name="password" id="password" placeholder="Password">
+                </div>
+              </div>
+              <button class="ui fluid large teal button" type="submit">Login</button>
+            </div>
+            <div class="ui error message"></div>
+            {{ csrf.field | raw }}
+          </form>
+          <div class="ui message">
+            New to us? <a href="#gosignup">Sign Up</a>
+          </div>
+        </div>
+      </div>
+    </div> 
+  </div>
+{% endif %}
+
+
+<!-- 
     <a class="active item" href="{{ path_for('home') }}">Home </a>
     <a class="item">Messages </a>
     <a class="item">Amigos </a>
@@ -26,6 +101,4 @@
         
       {% endif %}
 
-    </div>
-  </div>
-</div>
+    </div> -->

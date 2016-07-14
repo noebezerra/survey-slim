@@ -3,7 +3,7 @@
 	namespace App\Controllers\Auth;
 
 	use App\Models\User;
-	use App\Models\Poll;
+	use App\Models\PollQuestions;
 	use App\Models\PollAnswers;
 
 	use App\Controllers\Controller;
@@ -26,7 +26,7 @@
 			// if flag poll 0
 			if ($poll == 0) {
 				
-				$allpoll = Poll::all('question');
+				$allpoll = PollQuestions::all('question');
 				$data = json_decode($allpoll, true);
 
 				// var_dump($poll);
@@ -60,7 +60,7 @@
 				// message to error sign in
 				$this->flash->addMessage('error', 'Could not sign you in with those details');
 
-				return $response->withRedirect($this->router->pathFor('auth.signin'));
+				return $response->withRedirect($this->router->pathFor('auth.signup'));
 			}
 
 

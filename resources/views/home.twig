@@ -1,8 +1,52 @@
 {% extends 'templates/app.twig' %}
 
 {% block content %}
+	<div class="ui container">
+		<div class="ui stackable equal width grid">
+			{% for key, value in _context %}
+				{% if value.poll != '' %}
+					<div class="one column row one-column-custom">
+						<div class="column">
+							<div class="ui card" id="{{ value.id }}">
+								<div class="ui basic segment">
+								  <a class="image" href="#">
+								    <img src="{{ value.img }}" class="cardsurvey">
+								  </a>
+								  <div class="content">
+								    <a class="header" href="#">{{ value.poll }}</a>
+								    <div class="meta">
+								      <a>{{ value.description }}</a>
+								    </div>
+								  </div>
+								</div>
+							</div>
+					    </div>
+					</div>
+				    {% endif %}
+			{% endfor %}
+		</div>
+	</div>
+
 	
-	Home
+	<!-- <div class="ui container">
+		<div class="ui link cards">
+			{% for key, value in _context %}
+				{% if value.poll != '' %}
+					<div class="card" id="{{ value.id }}">
+						<div class="image">
+							<img src="http://www.noticiasdematogrosso.com.br/wp-content/uploads/2015/04/ENQUETE.jpg">
+						</div>
+						<div class="content">
+							<div class="header">{{ value.poll }}</div>
+							<div class="description">Uma breve descrição de uma enquete <aqui class=""></aqui></div>
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	</div> -->
+	
+
 
 
 	{% include 'templates/partials/poll.twig' %}

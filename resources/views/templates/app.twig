@@ -3,56 +3,136 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Codecourse</title>
-	<link rel="stylesheet" href="{{ base_url() }}/css/semantic.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+	<title>Survey-Slim</title>
+	<link rel="stylesheet" href="{{ base_url() }}/css/semantic.min.css" media="screen,projection"/>
+    <link rel="stylesheet" href="{{ base_url() }}/css/main.css" media="screen,projection"/>
     <link rel="stylesheet" href="{{ base_url() }}/css/icon.min.css" />
-  	<link rel="stylesheet" href="{{ base_url() }}/css/main.css" />
-
-
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"> -->
-
-	<style type="text/css">
-	  body {
-	    /*background-color: #DADADA;*/
-	  }
-	  body.grid {
-	    height: 100%;
-	  }
-	  .image {
-	    margin-top: -100px;
-	  }
-	  .column {
-	    max-width: 450px;
-	  }
-      .star {
-        cursor: pointer;
-      }
-	</style>
 </head>
 
-
-<body>
-
-
-    {% include 'templates/partials/navigation.twig' %}
-    <div class="ui segment">
-        <div class="ui container-fluid">
-            {% include 'templates/partials/flash.twig' %}
-        
-			{% block content %}{% endblock %}
-
-		</div>
-	</div>
-	   
+<!-- Iniciando minha aplicacao com ng-app -->
+<body data-ng-app="survey" data-ng-controller="TitleController as Title">
     
+    <!-- side bar mobile -->
+    {% if auth.check %}
+        <div class="ui left sidebar inverted vertical menu">
+          <li class="item welcome-menu">Bem vindo {{ auth.user.name }}</li>
+          <a class="item" href="#">Home</a>
+          <a class="item">Edit Profile</a>
+          <a class="item">Choose Language</a>
+          <a class="item" href="{{ path_for('auth.password.change') }}" >Account Settings</a>
+          <a class="ui item" href="{{ path_for('auth.signout') }}">Sair </a>
+        </div>
+    {% else %}
+        <div class="ui left sidebar inverted vertical menu">
+          <a class="item" href="#">Home</a>
+          <a class="item" href="#goabout">About</a>
+          <a class="item" href="#gosignin">Login</a>
+          <a class="item" href="#gosignup">Sign Up</a>
+        </div>
+    {% endif %}
+    <!-- contend -->
+    <div class="pusher">
+        <!-- navbar - home -->
+        {% include 'templates/partials/navigation.twig' %}
+        
+        {% include 'templates/partials/flash.twig' %}
+        <!-- conteudos page -->
+        {% block content %}{% endblock %}
+        <!-- footer -->
+        <footer class="ui center aligned basic segment">
+            <div class="ui container">
+              <div class="ui stackable equal width grid">
+                <div class="column">
+                    <img class="footerlogo" src="{{ base_url() }}/img/surveylogobranco.png" alt="Survey">
+                </div>
+                <div class="column">
+                  <p>Survey - 2016 - Sistema de enquete</p>
+                </div>
+              </div>
+            </div>
+        </footer>
+
+        {[{ Title.titulo }]}
+        <label for="">Busca: <input type="text" ng-model="searchUser" placeholder="Pesquisar"></label>
+        <div data-ng-repeat="user in Title.users | orderBy:'name' | filter:searchUser">
+            <span data-ng-repeat="info in user">
+                {[{ info }]}
+            </span>
+        </div>
+        <div ng-controller="HelloWorld as Hello"> {[{ Hello.message }]} </div>
+
+    </div>
 
 	<script src="{{ base_url() }}/js/jquery-2.2.3.min.js"></script>
     <script src="{{ base_url() }}/js/semantic.min.js"></script>     
+  	<script src="{{ base_url() }}/js/angular.min.js"></script> 	
     <script src="{{ base_url() }}/js/star-rating.min.js"></script>  
-  	<script src="{{ base_url() }}/js/changepoll.js"></script> 	
+    <script src="{{ base_url() }}/js/changepoll.js"></script>   
 
 	
 	<script>
+    /**********************************************
+    ******************** Theme - design
+    */
+    // alert(Date());
+    $('.ui.dropdown').dropdown();
+    $('.ui.sidebar').sidebar('attach events', '.toc.item');
+    // active accordion
+    $('.ui.accordion').accordion({
+        selector:{
+            accordion:
+                '.accordion',
+                title: '.title',
+                trigger: '.title .trigger',
+                content: '.content',
+                exclusive: false
+        }
+    });
+
+    /**********************************************
+    ************* Modulo da aplícacao Angular
+    */
+        angular.module('survey', [])
+        .config(function ($interpolateProvider) {
+            $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
+        })
+        .config(['$routeProvider', function($routeProvider) {
+            $routeProvider.
+                when('/survey/public/adm', {templateUrl: '../auth/admpoll.twig', controller: List}).
+                otherwise({redirectTo: '/'});
+        }])
+        .controller('TitleController', TitleController)
+        .controller('HelloWorld', HelloWorld)
+        .controller('ListSurvey', ListSurvey);
+        function TitleController() {
+            var vm = this;
+            vm.titulo = "Teste controller em Angular.js";
+            vm.users = [
+                {name: 'Ygo', email: 'ygo@email.com'},
+                {name: 'Noe', email: 'noe@email.com'}
+            ];
+        }
+        function HelloWorld() {
+            var vm = this;
+            vm.message = "HelloWorld";
+        }
+        function ListSurvey($http) {
+            $http.get('adm').success(function(data) {
+                var vm = this;
+                vm.teste = data;
+                console.log(teste);
+            })
+        }
+        function List($http) {
+            $http.get('adm').success(function(data) {
+                var vm = this;
+                vm.teste = data;
+                console.log(teste);
+            })
+        }
+    
+
         // $(document).ready(function() {
         //     $('.ui.form').form({
         //         fields: {
@@ -87,87 +167,76 @@
         //     });
         // });
 /*****************************************************
-************************ Modal Poll - survey
+************* Modal Poll and send AJAX - survey
 */
-        // fechamento das mensagens de alertas
-        $('.message .close').on('click', function() {
-            $(this).closest('.message').transition('fade');
-        });
+    // fechamento das mensagens de alertas
+    $('.message .close').on('click', function() {
+        $(this).closest('.message').transition('fade');
+    });
         
-        // ativa multiplos modais
-        $('.basic.modal').modal({
-            allowMultiple: false 
-        });
-        // attach events to buttons ------- segundo modal
-        $('.second.modal').modal('setting', 'closable', false).modal('attach events', '.first.modal .ok');
-        // show first now
-        $('.first.modal').modal('setting', 'closable', false).modal('show');
-
-/*****************************************************
-************************ Coloring stars
-*/
-        // colorir estrelas
-        // var indice;
-        // var indexAtual;
-        // var clickstar;
-        // $('.stars').mouseover(function(e) {
-        //     // capturar id da classe stars
-        //     indice = e.target.id;
-        // });
-        // $('.star').mouseover(function(e) {
-        //     indexAtual = $('.star').index(this);
-        //     // se for maior que 5
-        //     if (indexAtual+1 > 5) {
-        //         if (indexAtual+1 > 10) {
-
-        //         }
-        //         // ex: aux = 7 - 5 aux = 2
-        //         var aux = indexAtual - 5;
-        //         // indice = 2
-        //         indexAtual = aux;
-        //     }
-
-        //     // percorrendo estrelas
-        //     for(var i=1; i <= indexAtual + 1 ; i++){
-        //         console.log('.star'+indice+i);
-        //         $('.star'+indice+i).addClass('yellow').removeClass('empty');
-        //     }
-        // });
-        // $('.star').mouseout(function() {
-        //     // mouse fora volta as classes iniciais
-        //     $('.star').removeClass('yellow').addClass('empty');
-        // });
-/*  
-        $('.star').click(function(e) {
-            switch (indexAtual+1){
-                case 1:
-                    $('.star01').addClass('yellow').removeClass('empty');
-                break;
-                case 2:
-                    $('.star01').addClass('yellow').removeClass('empty');
-                    $('.star02').addClass('yellow').removeClass('empty');
-                break;
-                case 3:
-                    $('.star01').addClass('yellow').removeClass('empty');
-                    $('.star02').addClass('yellow').removeClass('empty');
-                    $('.star03').addClass('yellow').removeClass('empty');
-                break;
-                case 4:
-                    $('.star01').addClass('yellow').removeClass('empty');
-                    $('.star02').addClass('yellow').removeClass('empty');
-                    $('.star03').addClass('yellow').removeClass('empty');                
-                    $('.star04').addClass('yellow').removeClass('empty');                
-                break;
-                case 5:
-                    $('.star01').addClass('yellow').removeClass('empty');
-                    $('.star02').addClass('yellow').removeClass('empty');
-                    $('.star03').addClass('yellow').removeClass('empty');
-                    $('.star04').addClass('yellow').removeClass('empty');
-                    $('.star05').addClass('yellow').removeClass('empty');
-                break;
-            }
-        });*/
-
+    var idenquete;    
+    var idpergunta;    
+    var data;
+    // var pointStar = [];
+    var pointStar;
+    var qtdperguntas;    
+    $('.card').click(function(e) {
+        // capturando id do card poll
+        idenquete = $(this).attr('id');
+        // ajax - buscar perguntas
+        $.ajax({
+            url: 'http://localhost/survey/public/poll/pollquestions',
+            type: 'GET',
+            dataType: 'html',
+            data: {idenquete: idenquete},
+        })
+        .done(function(data) {
+            console.log(data);
+            // limpa html
+            $('#perguntas').html('');
+            // percorre perguntas em Json
+            var obj = jQuery.parseJSON(data); 
+            $.each(obj, function(index, el) {
+                console.log(el.answers);
+                $('#perguntas').append('<div class="thirteen wide column"><h4>'+el.question+'</h4></div><div class="five wide column stars"><div class="stars-default" id="p'+el.id+'" data-rating="'+el.answers+'"><input type="hidden" class="ui submit" name="rating" id="ratingp'+el.id+'"/></div></div>');
+            });
+            // pega tags input que contem as perguntas/questoes
+            qtdperguntas = document.getElementById('perguntas').getElementsByTagName('input');
+            // ferifica quantidade de perguntas
+            qtdperguntas = qtdperguntas.length;
+            // exibe cinco estrelas para cada pergunta
+            $(".stars-default").rating(
+                'create',{
+                    coloron:'gold',
+                    onClick:function(e){ 
+                        idpergunta = $(this).attr('id');
+                        // for (var i = 0; i < qtdperguntas; i++) {
+                            // 'ratingp' porque o idpergunta inclui um 'p' antes da numeracao
+                            pointStar = $('#rating'+idpergunta).val();
+                            alert(pointStar);
+                        // }
+                        $.ajax({
+                            url: 'http://localhost/survey/public/poll/pollanswers',
+                            type: 'GET',
+                            dataType: 'html',
+                            data: {idenquete: idenquete, valor: pointStar, qtdperguntas: qtdperguntas, idpergunta: idpergunta}
+                        })
+                        .done(function(data) {
+                            console.log(data);
+                        })
+                        .fail(function() {
+                            console.log("error");
+                        })
+                    }
+                }
+            );
+            // exibe modal
+            $('.ui.modal').modal('setting', 'closable', false).modal('show');
+        })
+        .fail(function() {
+            alert('Desculpe, houve um erro ao exibir a enquete.');
+        }); 
+    });
 /*******************************************************
 ********************* Bootstrap star rating - aptado para Semantic-ui 
 */
@@ -250,42 +319,124 @@
  
 }( jQuery ));
 
-var pointStar = [];
-var qtdperguntas;
-$('#yespoll').click(function(e) {
-    // var pointStar = [];
-    qtdperguntas = document.getElementById('perguntas').getElementsByTagName('input');
-    // for (var i = 1; i <= qtdperguntas; i++) {
-    //     var pergunta{i};    
-    // };
-    qtdperguntas = qtdperguntas.length;
-    $(".stars-default").rating(
-        'create',{
-            coloron:'gold',
-            onClick:function(e){ 
-                for (var i = 0; i < qtdperguntas; i++) {
-                   pointStar[i] = $('#rating'+i).val();
-                }
-                console.log(pointStar);
-            }
-        }
-    );   
-});
-
-$('.stars-default').click(function(e) {
-    e.preventDefault();
+/*****************************************************
+***************** Busca cálculo da accordion-adm
+*/
+$('.accordion-adm').click(function(event) {
+    var idaccordion = $(this).attr('id');
     $.ajax({
-        url: '../app/Controllers/Poll.php',
+        url: 'http://localhost/survey/public/adm/pollaccordion',
         type: 'GET',
         dataType: 'html',
-        data: {valor: pointStar, qtdperguntas: qtdperguntas},
+        data: {idaccordion: idaccordion},
     })
     .done(function(data) {
         console.log(data);
+        var obj = jQuery.parseJSON(data); 
+        $('.timeelinee').html('');
+        $.each(obj, function(index, val) {
+            $('.timeelinee').append('<h4 style="margin-left: 30px;" class="questaccordion" id="questaccordion'+val.id+'">'+val.question+'</h4><div class="linepct'+val.id+'"></div>');
+            // resgatando id da pergunta 
+            // var questaccordion = val.id;
+            $.ajax({
+                url: 'http://localhost/survey/public/adm/pollaccordion/linepct',
+                type: 'GET',
+                dataType: 'html',
+                data: {idquestion: val.id, idaccordion: idaccordion},
+            })
+            .done(function(data) {
+                var obj = jQuery.parseJSON(data);
+                console.log(obj); 
+                $('.linepct'+val.id).append('<ul class="timeline" id="timeline"><li><div class="direction-r"><div class="desc">Ótimo!</div><div class="flag-wrapper"><span class="flag pctstar4">'+obj[4]+' %</span><span class="time-wrapper"><span class="time">5 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Bom</div><div class="flag-wrapper"><span class="flag pctstar3">'+obj[3]+' %</span><span class="time-wrapper"><span class="time">4 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Regular</div><div class="flag-wrapper"><span class="flag pctstar2">'+obj[2]+' %</span><span class="time-wrapper"><span class="time">3 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Ruim</div><div class="flag-wrapper"><span class="flag pctstar1">'+obj[1]+' %</span><span class="time-wrapper"><span class="time">2 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Péssimo!!!</div><div class="flag-wrapper"><span class="flag pctstar0">'+obj[0]+' %</span><span class="time-wrapper"><span class="time">1 <i class="yellow star icon"></i></span></span></div></div></li></ul>');
+            })
+            .fail(function() {
+                console.log("Houve um error ao calcular a porcentagem!");
+            });
+        });
     })
     .fail(function() {
-        console.log("error");
-    })
+        alert("Não foi possível exibir as questões da enquete.");
+    });
+});
+var auxquestion;
+$('#new-survey').click(function(event) {
+    auxquestion = 1;
+    // new survey 
+    $('.generate-modal-header').html('New survey');
+    $('#generate-modal-content').html('<div class="two fields"><div class="required field"><label for="poll">Nome</label><input type="text" id="poll" name="poll" placeholder="Minha enquete fofa"/></div><div class="field"><label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="img/cardsurvey.png" placeholder="img/cardsurvey.png"/></div></div><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;" placeholder="Desce a letra! =D"></textarea><hr/><label><button class="ui circular blue icon button" type="button" name="add"><i class="plus icon"></i></button></label><div class="required field"><label for="question'+auxquestion+'">Question</label><input class="valquestcreate" type="text" name="question'+auxquestion+'" id="question'+auxquestion+'"></div><div id="inputs_adicionais"></div>');
+    $('.ui.generate.modal').modal('show');
+    // adiciona nova questão
+    $("button[name='add']").click(function(e){
+        auxquestion++;
+        $('#inputs_adicionais').append('<label for="question'+auxquestion+'"><input class="valquestcreate" type="text" name="question'+auxquestion+'" id="question'+auxquestion+'"/> <a href="#" class="remove">X</a></label>');
+    });
+    // remove questão
+    $('#inputs_adicionais').delegate('a','click',function(e){
+        e.preventDefault();
+        auxquestion--;
+        $(this).parent('label').remove();
+    });
+    // validacao
+    $('.ui.generate.modal').modal({
+        onApprove: function() {
+            $('.ui.generate.form').form({
+                on: 'blur',
+                fields: {
+                  poll: {
+                    identifier : 'poll',
+                    rules: [{
+                        type   : 'empty',
+                        prompt : 'Por favor insira o nome.'
+                    }]
+                  },
+                  question: {
+                    identifier : 'question1',
+                    rules: [{
+                        type   : 'empty',
+                        prompt : 'Por favor insira a questão.'
+                    }]
+                  },
+                  dirimg: {
+                    identifier : 'dirimg',
+                    rules: [{
+                        type   : 'empty',
+                        prompt : 'Por favor insira a questão.'
+                    }]
+                  },
+
+                }
+            });
+            // enviar quantidade de perguntas e valores- ipunts criados
+            var valquestcreate = new Array();
+            $('.valquestcreate').each(function(index, el) {
+                // pecorrendo valores
+                valquestcreate.push($(this).val());
+            });
+            var poll = $('#poll').val();
+            var description = $('#description').val();
+            var dirimg = $('#dirimg').val();
+            // enviando para rota de insercao
+            $.ajax({
+                url: 'http://localhost/survey/public/adm/newsurvey',
+                type: 'GET',
+                dataType: 'html',
+                data: {'qtdquestcreate': auxquestion, poll: poll, dirimg: dirimg, description: description , 'valquestcreate[]': valquestcreate},
+            })
+            .done(function(data) {
+                console.log("success"+data);
+            })
+            .fail(function() {
+                console.log("error");
+            });
+            return false;       
+        }
+    });
+});  
+$('.edit-survey').click(function(event) {
+    // edit survey
+    $('.generate-modal-header').html('Edit survey');
+    $('#generate-modal-content').html('oi');
+    $('.ui.generate.modal').modal('show');
 });
 
 
