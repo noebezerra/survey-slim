@@ -8,7 +8,8 @@
       <div class="rigth item">
         <!-- menu bar -->
        <!-- loged -->
-        <a class="item" href="#">Home</a>
+        <a class="item" href="{{ path_for('home') }}">Home</a>
+        {% if auth.user.id_level_user == 2 %}<a class="item" href="{{ path_for('adm') }}"><i class="pie chart icon"></i> Adm</a>{% endif %}
         <div class="ui simple dropdown item">
           {{ auth.user.name }}
           <i class="dropdown icon"></i>
@@ -35,7 +36,7 @@
           <div class="rigth item">
             <!-- menu bar -->
             <!-- not loged -->
-            <a class="active item" href="#">Home</a>
+            <a class="active item" href="{{ path_for('home') }}">Home</a>
             <a class="item" href="#goabout">About</a>
             <div class="ui buttons">
               <a class="ui button black" href="#gosignin"><i class="sign in icon"></i>Login</a>

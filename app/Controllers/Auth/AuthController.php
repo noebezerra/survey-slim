@@ -92,7 +92,7 @@
 				'name' => $request->getParam('name'),
 				'email' => $request->getParam('email'),
 				'password' => password_hash($request->getParam('password'), PASSWORD_DEFAULT),
-
+	
 			]);
 
 			// message to welcome

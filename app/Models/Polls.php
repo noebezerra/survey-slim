@@ -13,6 +13,6 @@
 
 		public $timestamps = false;
 
-		protected $fillable = array('poll', 'description', 'img');
+		protected $fillable = array('poll', 'description', 'img', 'dta_start', 'dta_finish');
 	}
 ?>

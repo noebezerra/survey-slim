@@ -11,7 +11,7 @@
 		
 		protected $table = 'users';
 
-		protected $fillable = array('name', 'email', 'password');
+		protected $fillable = array('name', 'email', 'password', 'id_level_user');
 
 		
 		public function setPoll($poll) {

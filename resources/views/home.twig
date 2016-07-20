@@ -3,8 +3,9 @@
 {% block content %}
 	<div class="ui container">
 		<div class="ui stackable equal width grid">
+			{% set count = 0 %}
 			{% for key, value in _context %}
-				{% if value.poll != '' %}
+				{% if value.poll != '' and ( value.dta_start <= ("now" | date("Y-m-d")) and value.dta_finish >= ("now" | date("Y-m-d")) ) %}
 					<div class="one column row one-column-custom">
 						<div class="column">
 							<div class="ui card" id="{{ value.id }}">
@@ -18,12 +19,32 @@
 								      <a>{{ value.description }}</a>
 								    </div>
 								  </div>
+								  <div class="extra content">
+								  	<hr style="color: #cecece">
+								    <div class="ui left aligned" style="position: absolute;">
+								    <i class="star icon"></i> {{ value.dta_start | date("d/m/Y") }}
+								    </div>
+								    <div class="ui right aligned" style="position: relative; display: block;">
+								    	<i class="delete icon"></i> {{ value.dta_finish | date("d/m/Y") }}
+								    </div>
+								  </div>
 								</div>
 							</div>
 					    </div>
 					</div>
-				    {% endif %}
+					{% set count = count + 1 %}
+				{% endif %}
 			{% endfor %}
+			{% if count == 0 %}
+				<div class="message-box-50">	
+					<div class="ui yellow message">
+					  <div class="header">"O céu está limpo... nenhuma estrela pode ser vista durante o dia"</div>
+					  <ul class="list">
+					    <li>Nenhuma enquete criada.</li>
+					  </ul>
+					</div>
+				</div>
+			{% endif %}
 		</div>
 	</div>
 

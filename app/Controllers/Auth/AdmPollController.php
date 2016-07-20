@@ -24,6 +24,13 @@
 			return $this->view->render($response, 'auth/admpoll.twig', $_context);
 		}
 
+		public function getSurvey() {
+			//lista todas enquetes
+			$allpolls = Polls::all();
+
+			echo $allpolls;
+		}
+
 		public function getQuestAccordion() {
 			// recebe o id do accordion clicado
 			$idaccordion = $_GET['idaccordion'];
@@ -47,7 +54,7 @@
 
 			// quantidade de usuario que repondeu determinada enquete
 			$qtduser = PollAnswers::join('poll_questions', 'poll_questions.id', '=', 'poll_answers.id_question')
-						->where('poll_questions.id_poll', $idaccordion)->distinct('poll_answers.id_user')->count('poll_answers.id_user');
+						->whereRaw('poll_questions.id_poll = ? AND poll_answers.answers != ?', [ $idaccordion, 0 ])->distinct('poll_answers.id_user')->count('poll_answers.id_user');
 			// quantidade de respostas de estrelas
 			// 5 star
 			$qtdfivestar = PollAnswers::join('poll_questions', 'poll_questions.id', '=', 'poll_answers.id_question')
@@ -87,12 +94,16 @@
 			$description = $_GET['description'];
 			$questions = $_GET['valquestcreate'];
 			$dirimg = $_GET['dirimg'];
+			$dta_start = $_GET['dta_start'];
+			$dta_finish = $_GET['dta_finish'];
 
-			if ((!empty($_GET['poll'])) && (!empty($_GET['valquestcreate'][0]))) {
+			if ( (!empty($_GET['poll'])) && (!empty($_GET['valquestcreate'][0])) && (!empty($_GET['dta_start'])) && (!empty($_GET['dta_finish'])) ) {
 				$pollcreate = Polls::create([
 					'poll' => $poll,
 					'description' => $description,
 					'img' => $dirimg,
+					'dta_start' => $dta_start,
+					'dta_finish' => $dta_finish,
 				]);
 				if ($pollcreate) {
 					for ($i=0; $i < $qtdquestcreate; $i++) { 

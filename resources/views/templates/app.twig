@@ -11,13 +11,14 @@
 </head>
 
 <!-- Iniciando minha aplicacao com ng-app -->
-<body data-ng-app="survey" data-ng-controller="TitleController as Title">
+<body>
     
     <!-- side bar mobile -->
     {% if auth.check %}
         <div class="ui left sidebar inverted vertical menu">
           <li class="item welcome-menu">Bem vindo {{ auth.user.name }}</li>
-          <a class="item" href="#">Home</a>
+          <a class="item" href="{{ path_for('home') }}">Home</a>
+          {% if auth.user.id_level_user == 2 %}<a class="item" href="{{ path_for('adm') }}"><i class="pie chart icon"></i> Adm</a>{% endif %}
           <a class="item">Edit Profile</a>
           <a class="item">Choose Language</a>
           <a class="item" href="{{ path_for('auth.password.change') }}" >Account Settings</a>
@@ -25,7 +26,7 @@
         </div>
     {% else %}
         <div class="ui left sidebar inverted vertical menu">
-          <a class="item" href="#">Home</a>
+          <a class="item" href="{{ path_for('home') }}">Home</a>
           <a class="item" href="#goabout">About</a>
           <a class="item" href="#gosignin">Login</a>
           <a class="item" href="#gosignup">Sign Up</a>
@@ -44,7 +45,7 @@
             <div class="ui container">
               <div class="ui stackable equal width grid">
                 <div class="column">
-                    <img class="footerlogo" src="{{ base_url() }}/img/surveylogobranco.png" alt="Survey">
+                    <img class="footerlogo" src="{{ base_url() }}/img/surveylogobranco.png" alt="Survey"> BETA
                 </div>
                 <div class="column">
                   <p>Survey - 2016 - Sistema de enquete</p>
@@ -53,21 +54,22 @@
             </div>
         </footer>
 
-        {[{ Title.titulo }]}
+        <!-- {[{ Title.titulo }]}
         <label for="">Busca: <input type="text" ng-model="searchUser" placeholder="Pesquisar"></label>
         <div data-ng-repeat="user in Title.users | orderBy:'name' | filter:searchUser">
             <span data-ng-repeat="info in user">
                 {[{ info }]}
             </span>
         </div>
-        <div ng-controller="HelloWorld as Hello"> {[{ Hello.message }]} </div>
+        <div ng-controller="HelloWorld as Hello"> {[{ Hello.message }]} </div> -->
 
     </div>
 
 	<script src="{{ base_url() }}/js/jquery-2.2.3.min.js"></script>
+    <!-- <script src="{{ base_url() }}/js/angular.min.js"></script>   -->
     <script src="{{ base_url() }}/js/semantic.min.js"></script>     
-  	<script src="{{ base_url() }}/js/angular.min.js"></script> 	
     <script src="{{ base_url() }}/js/star-rating.min.js"></script>  
+    <!-- <script src="{{ base_url() }}/js/pagination.js"></script>    -->
     <script src="{{ base_url() }}/js/changepoll.js"></script>   
 
 	
@@ -93,18 +95,14 @@
     /**********************************************
     ************* Modulo da aplícacao Angular
     */
-        angular.module('survey', [])
+        /*angular.module('survey', ['Pagination'])
         .config(function ($interpolateProvider) {
             $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
         })
-        .config(['$routeProvider', function($routeProvider) {
-            $routeProvider.
-                when('/survey/public/adm', {templateUrl: '../auth/admpoll.twig', controller: List}).
-                otherwise({redirectTo: '/'});
-        }])
         .controller('TitleController', TitleController)
         .controller('HelloWorld', HelloWorld)
-        .controller('ListSurvey', ListSurvey);
+        .controller('ListSurvey', ListSurvey)
+        .controller('SimplePaginationCtrl', SimplePaginationCtrl);
         function TitleController() {
             var vm = this;
             vm.titulo = "Teste controller em Angular.js";
@@ -117,21 +115,64 @@
             var vm = this;
             vm.message = "HelloWorld";
         }
-        function ListSurvey($http) {
-            $http.get('adm').success(function(data) {
-                var vm = this;
-                vm.teste = data;
-                console.log(teste);
+        function ListSurvey($scope, $http) {
+            $http.get('http://localhost/survey/public/adm/enquete').success(function(data) {
+                // var vm = this;
+                $scope.allsurvey = data;
+                console.log($scope.allsurvey);
             })
         }
-        function List($http) {
-            $http.get('adm').success(function(data) {
-                var vm = this;
-                vm.teste = data;
-                console.log(teste);
-            })
-        }
-    
+        function SimplePaginationCtrl($scope, $http, SimplePaginate) {
+            var success = function(response) {
+                //aqui vamos configurar a paginação
+                //o SimplePaginate que injetei será o service responsável por isso
+                SeverPaginate.configure({
+                    data: response.data.data,
+                    next: response.data.paging.next,
+                    prev: response.data.paging.previous,
+                    total: response.data.summary.total_count,
+                    goToPage: goToPage
+                });
+
+                $scope.paginate = SeverPaginate.getData();
+            }
+            var goToPage =  function (url) {
+                $http.get(url).then(success);
+            }
+            $goToPage('http://localhost/survey/public/adm/enquete');
+        }*/
+        
+    /* paginação */
+    // (function(){
+    //     'use strict';
+
+    //     var module = angular.module('app', ['Pagination']);
+
+    //     module.controller('SimplePaginationCtrl', function($scope, $http, SimplePaginate) {
+    //         var success = function(response) {
+    //             //aqui vamos configurar a paginação
+    //             //o SimplePaginate que injetei será o service responsável por isso
+    //             SimplePaginate.configure({
+    //                 data:response.data.data,
+    //                 perPage: 10
+    //             });
+
+    //             $scope.paginate = {
+    //                 result : SimplePaginate.goToPage(0),
+    //                 total : SimplePaginate.itemsTotal(),
+    //                 next : function() {
+    //                     $scope.paginate.result = SimplePaginate.next();
+    //                 },
+    //                 prev : function() {
+    //                     $scope.paginate.result = SimplePaginate.prev();
+    //                 }
+    //             };
+
+    //         }
+
+    //         $http.get('http://localhost/survey/public/adm/enquete').then(success);
+    //     });
+    // })()
 
         // $(document).ready(function() {
         //     $('.ui.form').form({
@@ -185,7 +226,7 @@
         idenquete = $(this).attr('id');
         // ajax - buscar perguntas
         $.ajax({
-            url: 'http://localhost/survey/public/poll/pollquestions',
+            url: 'poll/pollquestions',
             type: 'GET',
             dataType: 'html',
             data: {idenquete: idenquete},
@@ -213,10 +254,10 @@
                         // for (var i = 0; i < qtdperguntas; i++) {
                             // 'ratingp' porque o idpergunta inclui um 'p' antes da numeracao
                             pointStar = $('#rating'+idpergunta).val();
-                            alert(pointStar);
+                            // alert(pointStar);
                         // }
                         $.ajax({
-                            url: 'http://localhost/survey/public/poll/pollanswers',
+                            url: 'poll/pollanswers',
                             type: 'GET',
                             dataType: 'html',
                             data: {idenquete: idenquete, valor: pointStar, qtdperguntas: qtdperguntas, idpergunta: idpergunta}
@@ -237,6 +278,9 @@
             alert('Desculpe, houve um erro ao exibir a enquete.');
         }); 
     });
+    $('.finalizar').click(function(event) {
+        alert('Obrigado pelo seu voto!');
+    }); 
 /*******************************************************
 ********************* Bootstrap star rating - aptado para Semantic-ui 
 */
@@ -325,7 +369,7 @@
 $('.accordion-adm').click(function(event) {
     var idaccordion = $(this).attr('id');
     $.ajax({
-        url: 'http://localhost/survey/public/adm/pollaccordion',
+        url: 'adm/pollaccordion',
         type: 'GET',
         dataType: 'html',
         data: {idaccordion: idaccordion},
@@ -339,7 +383,7 @@ $('.accordion-adm').click(function(event) {
             // resgatando id da pergunta 
             // var questaccordion = val.id;
             $.ajax({
-                url: 'http://localhost/survey/public/adm/pollaccordion/linepct',
+                url: 'adm/pollaccordion/linepct',
                 type: 'GET',
                 dataType: 'html',
                 data: {idquestion: val.id, idaccordion: idaccordion},
@@ -347,7 +391,7 @@ $('.accordion-adm').click(function(event) {
             .done(function(data) {
                 var obj = jQuery.parseJSON(data);
                 console.log(obj); 
-                $('.linepct'+val.id).append('<ul class="timeline" id="timeline"><li><div class="direction-r"><div class="desc">Ótimo!</div><div class="flag-wrapper"><span class="flag pctstar4">'+obj[4]+' %</span><span class="time-wrapper"><span class="time">5 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Bom</div><div class="flag-wrapper"><span class="flag pctstar3">'+obj[3]+' %</span><span class="time-wrapper"><span class="time">4 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Regular</div><div class="flag-wrapper"><span class="flag pctstar2">'+obj[2]+' %</span><span class="time-wrapper"><span class="time">3 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Ruim</div><div class="flag-wrapper"><span class="flag pctstar1">'+obj[1]+' %</span><span class="time-wrapper"><span class="time">2 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Péssimo!!!</div><div class="flag-wrapper"><span class="flag pctstar0">'+obj[0]+' %</span><span class="time-wrapper"><span class="time">1 <i class="yellow star icon"></i></span></span></div></div></li></ul>');
+                $('.linepct'+val.id).append('<ul class="timeline" id="timeline"><li><div class="direction-r"><div class="desc">Ótimo!</div><div class="flag-wrapper"><span class="flag pctstar4">'+(Math.round(obj[4] * 100) /100)+' %</span><span class="time-wrapper"><span class="time">5 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Bom</div><div class="flag-wrapper"><span class="flag pctstar3">'+(Math.round(obj[3] * 100) /100)+' %</span><span class="time-wrapper"><span class="time">4 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Regular</div><div class="flag-wrapper"><span class="flag pctstar2">'+(Math.round(obj[2] * 100) /100)+' %</span><span class="time-wrapper"><span class="time">3 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Ruim</div><div class="flag-wrapper"><span class="flag pctstar1">'+(Math.round(obj[1] * 100) /100)+' %</span><span class="time-wrapper"><span class="time">2 <i class="yellow star icon"></i></span></span></div></div></li><li><div class="direction-r"><div class="desc">Péssimo!!!</div><div class="flag-wrapper"><span class="flag pctstar0">'+(Math.round(obj[0] * 100) /100)+' %</span><span class="time-wrapper"><span class="time">1 <i class="yellow star icon"></i></span></span></div></div></li></ul>');
             })
             .fail(function() {
                 console.log("Houve um error ao calcular a porcentagem!");
@@ -361,9 +405,16 @@ $('.accordion-adm').click(function(event) {
 var auxquestion;
 $('#new-survey').click(function(event) {
     auxquestion = 1;
+
+    // exibindo data inicial
+    var now = new Date();
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day);
     // new survey 
     $('.generate-modal-header').html('New survey');
-    $('#generate-modal-content').html('<div class="two fields"><div class="required field"><label for="poll">Nome</label><input type="text" id="poll" name="poll" placeholder="Minha enquete fofa"/></div><div class="field"><label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="img/cardsurvey.png" placeholder="img/cardsurvey.png"/></div></div><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;" placeholder="Desce a letra! =D"></textarea><hr/><label><button class="ui circular blue icon button" type="button" name="add"><i class="plus icon"></i></button></label><div class="required field"><label for="question'+auxquestion+'">Question</label><input class="valquestcreate" type="text" name="question'+auxquestion+'" id="question'+auxquestion+'"></div><div id="inputs_adicionais"></div>');
+    $('#generate-modal-content').html('<div class="two fields"><div class="required field"><label for="poll">Nome</label><input type="text" id="poll" name="poll" placeholder="Minha enquete fofa"/></div><div class="field"><label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="img/cardsurvey.jpg" placeholder="img/cardsurvey.png"/></div></div><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;" placeholder="Desce a letra! =D"></textarea><div class="two fields"><div class="required field"><label for="dta_start">Início</label><input type="date" id="dta_start" name="dta_start" placeholder="dd/mm/yyyy"/></div></div><div class="required field"><label for="dta_finish">Fim</label><input type="date" id="dta_finish" name="dta_finish" placeholder="dd/mm/yyyy"/></div></div></div><hr/><label><button class="ui circular blue icon button" type="button" name="add"><i class="plus icon"></i></button></label><div class="required field"><label for="question'+auxquestion+'">Question</label><input class="valquestcreate" type="text" name="question'+auxquestion+'" id="question'+auxquestion+'"></div><div id="inputs_adicionais"></div>');
+    $('#dta_start').val(today);
     $('.ui.generate.modal').modal('show');
     // adiciona nova questão
     $("button[name='add']").click(function(e){
@@ -403,6 +454,20 @@ $('#new-survey').click(function(event) {
                         prompt : 'Por favor insira a questão.'
                     }]
                   },
+                  dta_start: {
+                    identifier : 'dta_start',
+                    rules: [{
+                        type   : 'empty',
+                        prompt : 'Por favor insira a data inicial.'
+                    }]
+                  },
+                  dta_finish: {
+                    identifier : 'dta_finish',
+                    rules: [{
+                        type   : 'empty',
+                        prompt : 'Por favor insira a data final.'
+                    }]
+                  },
 
                 }
             });
@@ -415,12 +480,14 @@ $('#new-survey').click(function(event) {
             var poll = $('#poll').val();
             var description = $('#description').val();
             var dirimg = $('#dirimg').val();
+            var dta_start = $('#dta_start').val();
+            var dta_finish = $('#dta_finish').val();
             // enviando para rota de insercao
             $.ajax({
-                url: 'http://localhost/survey/public/adm/newsurvey',
+                url: 'adm/newsurvey',
                 type: 'GET',
                 dataType: 'html',
-                data: {'qtdquestcreate': auxquestion, poll: poll, dirimg: dirimg, description: description , 'valquestcreate[]': valquestcreate},
+                data: {'qtdquestcreate': auxquestion, poll: poll, dirimg: dirimg, description: description , 'valquestcreate[]': valquestcreate, dta_start: dta_start, dta_finish: dta_finish},
             })
             .done(function(data) {
                 console.log("success"+data);

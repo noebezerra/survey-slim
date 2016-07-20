@@ -8,6 +8,7 @@
 */
 body.grid {
   height: 100%;
+  background-color: #cecece;
 }
 .image {
   margin-top: -100px;
@@ -17,6 +18,10 @@ body.grid {
 }
 .star {
   cursor: pointer;
+}
+.message-box-50 {
+  margin: 20px 0;
+  min-height: 50vh;
 }
 /*****************************************************
 ********************* Loged
@@ -70,6 +75,10 @@ body.grid {
   .secondary.pointing.menu .toc.item {
     display: block;
   }
+  .five.wide.column.stars {
+    width: 100% !important;
+  }
+
 }
 
 /* login */
@@ -185,7 +194,24 @@ footer .footerlogo {
   z-index: 5;
 }
 
-
+/* media 715px */
+@media only screen and (max-width: 715px) {
+  .timeline:before {
+    display: none !important;
+  }
+  .timeline {
+    width: 100% !important;
+    display: block !important;
+    height: 400px !important;
+  }
+  .timeline li:before {
+    display: none !important;
+  }
+  .timeline li {
+    display: list-item !important;
+    list-style: none !important; 
+  }
+}
 
 
 
