@@ -401,7 +401,7 @@ $('#new-survey').click(function(event) {
     var today = now.getFullYear()+"-"+(month)+"-"+(day);
     // new survey 
     $('.generate-modal-header').html('New survey');
-    $('#generate-modal-content').html('<div class="two fields"><div class="required field"><label for="poll">Nome</label><input type="text" id="poll" name="poll" placeholder="Minha enquete fofa"/></div><div class="field"><label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="img/cardsurvey.jpg" placeholder="img/cardsurvey.png"/></div></div><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;" placeholder="Desce a letra! =D"></textarea><div class="two fields"><div class="required field"><label for="dta_start">Início</label><input type="date" id="dta_start" name="dta_start" placeholder="dd/mm/yyyy"/></div></div><div class="required field"><label for="dta_finish">Fim</label><input type="date" id="dta_finish" name="dta_finish" placeholder="dd/mm/yyyy"/></div></div></div><hr/><label><button class="ui circular blue icon button" type="button" name="add"><i class="plus icon"></i></button></label><div class="required field"><label for="question'+auxquestion+'">Question</label><input class="valquestcreate" type="text" name="question'+auxquestion+'" id="question'+auxquestion+'"></div><div id="inputs_adicionais"></div>');
+    $('#generate-modal-content').html('<div class="two fields"><div class="required field"><label for="poll">Nome</label><input type="text" id="poll" name="poll" placeholder="Minha enquete fofa"/></div><div class="field"><label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="img/cardsurvey.jpg" placeholder="img/cardsurvey.png"/></div></div><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;" placeholder="Desce a letra! =D"></textarea><div class="two fields"><div class="required field"><label for="dta_start">Início</label><input type="date" id="dta_start" name="dta_start" placeholder="yyyy-mm-dd"/></div><div class="required field"><label for="dta_finish">Fim</label><input type="date" id="dta_finish" name="dta_finish" placeholder="yyyy-mm-dd"/></div></div></div><hr/><label><button class="ui circular blue icon button" type="button" name="add"><i class="plus icon"></i></button></label><div class="required field"><label for="question'+auxquestion+'">Question</label><input class="valquestcreate" type="text" name="question'+auxquestion+'" id="question'+auxquestion+'"></div><div id="inputs_adicionais"></div>');
     $('#dta_start').val(today);
     $('.ui.generate.modal').modal('show');
     // adiciona nova questão
@@ -489,8 +489,9 @@ $('#new-survey').click(function(event) {
     });
 });  
 /* Edit survey  */
+idenquete = '';
 $('.edit-survey').click(function(event) {
-    var idenquete = $(this).attr('id');
+    idenquete = $(this).attr('id');
     $.ajax({
         url: 'adm/edit',
         type: 'GET',
@@ -502,46 +503,45 @@ $('.edit-survey').click(function(event) {
         if (data.return) {
             $('#generate-modal-content').html('<label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="'+data.img+'"/><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;">'+data.description+'</textarea><div class="required field"><label for="dta_finish">Fim</label><input type="date" id="dta_finish" name="dta_finish" value="'+data.dta_finish+'" placeholder="yyyy-mm-dd"/></div><hr/>');
         }else{
-            $('#generate-modal-content').html('<div class="two fields"><div class="required field"><label for="poll">Nome</label><input type="text" id="poll" name="poll" value="'+data.poll+'"/></div><div class="field"><label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="'+data.img+'"/></div></div><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;">'+data.description+'</textarea><div class="two fields"><div class="required field"><label for="dta_start">Início</label><input type="date" id="dta_start" name="dta_start" value="'+data.dta_start+'" placeholder="yyyy-mm-dd"/></div></div><div class="required field"><label for="dta_finish">Fim</label><input type="date" id="dta_finish" name="dta_finish" value="'+data.dta_finish+'" placeholder="yyyy-mm-dd"/></div></div></div><hr/>');
+            $('#generate-modal-content').html('<div class="two fields"><div class="required field"><label for="poll">Nome</label><input type="text" id="poll" name="poll" value="'+data.poll+'"/></div><div class="field"><label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="'+data.img+'"/></div></div><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;">'+data.description+'</textarea><div class="two fields"><div class="required field"><label for="dta_start">Início</label><input type="date" id="dta_start" name="dta_start" value="'+data.dta_start+'" placeholder="yyyy-mm-dd"/></div><div class="required field"><label for="dta_finish">Fim</label><input type="date" id="dta_finish" name="dta_finish" value="'+data.dta_finish+'" placeholder="yyyy-mm-dd"/></div></div></div><hr/>');
             $.each(data.questions, function(index, val) {
-                $('#generate-modal-content').append('<div class="required field"><label for="question'+val.id+'">Question</label><input class="valquestedit" type="text" name="question'+val.id+'" id="question'+val.id+'" value="'+val.question+'"></div>')
+                $('#generate-modal-content').append('<div class="required field"><label for="question'+val.id+'">Question</label><input class="valquestedit" type="text" name="question'+val.id+'" id="question'+val.id+'" value="'+val.question+'"></div>');
             });
         }
         $('.ui.generate.modal').modal('show');
-        $('.ui.generate.modal').click(function(event) {
-            // enviar quantidade de perguntas e valores- ipunts criados
-            var valquestedit = new Array();
-            $('.valquestedit').each(function(index, el) {
-                // pecorrendo valores
-                valquestedit.push($(this).val());
-            });
-            var poll = $('#poll').val();
-            var dirimg = $('#dirimg').val();
-            var description = $('#description').val();
-            var dta_start = $('#dta_start').val();
-            var dta_finish = $('#dta_finish').val();
-            $.ajax({
-                url: 'adm/edit',
-                type: 'POST',
-                dataType: 'html',
-                data: {poll: poll, dirimg: dirimg, description: description, dta_start: dta_start, dta_finish: dta_finish, 'valquestedit[]': valquestedit},
-            })
-            .done(function() {
-                console.log("success");
-            })
-            .fail(function() {
-                console.log("error");
-            })
-            .always(function() {
-                console.log("complete");
-            });
-            
-        });
     })
     .fail(function() {
         alert("Houve um erro ao editar a enquete");
     });
-
+});
+$('#save').click(function(event) {
+    // enviar quantidade de perguntas e valores- ipunts criados
+    var valquestedit = new Array();
+    $('.valquestedit').each(function(index, el) {
+        // percorredo id
+        valquestedit.push($(this).attr('id'));
+        // percorrendo valores
+        valquestedit.push($(this).val());
+    });
+    var poll = $('#poll').val();
+    var dirimg = $('#dirimg').val();
+    var description = $('#description').val();
+    var dta_start = $('#dta_start').val();
+    var dta_finish = $('#dta_finish').val();
+    $.ajax({
+        url: 'adm/edit/save',
+        type: 'GET',
+        dataType: 'html',
+        data: {idenquete: idenquete, poll: poll, dirimg: dirimg, description: description, dta_start: dta_start, dta_finish: dta_finish, 'valquestedit[]': valquestedit},
+    })
+    .done(function(data) {
+        alert(data);
+        location.reload();
+        location.reload();
+    })
+    .fail(function(data) {
+        alert(data);
+    });
 });
 /* Delete survey */
 $('.del-survey').click(function(event) {

@@ -4,6 +4,7 @@
 	<div class="header generate-modal-header">Header</div>
 	<div class="content generate-modal-content">
 		<!-- <form action="" method="POST" role="form" class="ui generate form ingredients"> -->
+		<div class="ui form">
 			<!-- content here -->
 			<div id="generate-modal-content"></div>
 			<div class="actions">
@@ -11,10 +12,12 @@
 					<div class="ui buttons">
 					  <button class="ui black deny button">Cancelar</button>
 					  <div class="or" data-text="ou"></div>
-					  <button type="submit" class="ui positive right labeled icon button save">Salvar<i class="checkmark icon"></i></button>
+					  <button type="submit" class="ui positive right labeled icon button save" id="save">Salvar<i class="checkmark icon"></i></button>
 					</div>
 				</div>
 			</div>
+			{{ csrf.field | raw }}
+		</div>	
 		<!-- </form> -->
 	</div>
 </div>

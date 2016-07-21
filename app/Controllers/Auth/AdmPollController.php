@@ -149,30 +149,41 @@
 
 		public function postEditSurvey() {
 			try {
-				$return = false;
 				// recupera id da enquete
-				$idenquete = $_GET['idenquete'];
-				$idenquete = end(explode('edit', $idenquete));
-				// recupera todos id das questões desta enquete
-				$idQuestions = PollQuestions::where('id_poll', '=', $idenquete)->select('id')->get();
-				// verifica se possui respostas dos usuários desta enquete
-				foreach ($idQuestions as $key => $value) {
-					$editAnswers = PollAnswers::where('id_question', '=', $value['id'])->first();
-					if ($editAnswers) {
-						$editDados = Polls::select(array('description', 'img', 'dta_finish'))->find($idenquete);
-						$return = true;
-						break;
+				$idenquete = end(explode('edit', $_GET['idenquete']));
+				$poll = isset($_GET['poll']) ? $_GET['poll'] : null;
+				$dirimg = $_GET['dirimg'];
+				$description = $_GET['description'];
+				$dta_finish = $_GET['dta_finish'];
+				// busca enquete pelo id
+				$editPoll = Polls::find($idenquete);
+				if (!empty($poll)) {
+					// edita enquete
+					$editPoll->poll = $poll;
+					$editPoll->img = $dirimg;
+					$editPoll->description = $description;
+					$editPoll->dta_start = $_GET['dta_start'];
+					$editPoll->dta_finish = $dta_finish;
+					$editPoll->save();	
+					// edita questões da enquete
+					$questions = $_GET['valquestedit'];
+					for ($i=0; $i < count($questions); $i++) { 
+						if (($i % 2) == 0) {
+							$idquestion = $questions[$i];
+							$idquestion = end(explode('question', $idquestion));
+							$editPollQuestion = PollQuestions::find($idquestion);
+							$editPollQuestion->question = $questions[($i+1)];
+						}
 					}
-					$editDados = Polls::find($idenquete);
-					$editDadosQuestions = PollQuestions::where('id_poll', '=', $idenquete)->get();
+					$editPollQuestion->save();	
+				} else {
+					// edita enquete
+					$editPoll->img = $dirimg;
+					$editPoll->description = $description;
+					$editPoll->dta_finish = $dta_finish;
+					$editPoll->save();	
 				}
-				$editDados = json_decode($editDados, true);
-				$editDadosQuestions = json_decode($editDadosQuestions, true);
-				// print_r( $editDadosQuestions );
-				$editDados['return'] = $return;
-				$editDados['questions'] = $editDadosQuestions;
-				$editDados = json_encode($editDados, true);
-				return $editDados;
+				return "Enquete alterada!";
 			} catch (Exception $e) {
 				echo $e->getMessage();
 			}
