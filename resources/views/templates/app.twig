@@ -391,6 +391,7 @@ $('.accordion-adm').click(function(event) {
     });
 });
 var auxquestion;
+/* New survey */
 $('#new-survey').click(function(event) {
     auxquestion = 1;
     // exibindo data inicial
@@ -477,6 +478,8 @@ $('#new-survey').click(function(event) {
             })
             .done(function(data) {
                 console.log("success"+data);
+                location.reload();
+                location.reload();
             })
             .fail(function() {
                 console.log("error");
@@ -485,11 +488,49 @@ $('#new-survey').click(function(event) {
         }
     });
 });  
+/* Edit survey  */
 $('.edit-survey').click(function(event) {
-    // edit survey
-    $('.generate-modal-header').html('Edit survey');
-    $('#generate-modal-content').html('oi');
-    $('.ui.generate.modal').modal('show');
+    var idenquete = $(this).attr('id');
+    $.ajax({
+        url: 'adm/edit',
+        type: 'GET',
+        dataType: 'json',
+        data: {idenquete: idenquete},
+    })
+    .done(function(data) {
+        $('.generate-modal-header').html('Edit survey');
+        if (data.return) {
+            $('#generate-modal-content').html('<label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="'+data.img+'"/><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;">'+data.description+'</textarea><div class="required field"><label for="dta_finish">Fim</label><input type="date" id="dta_finish" name="dta_finish" value="'+data.dta_finish+'" placeholder="yyyy-mm-dd"/></div><hr/>');
+        }else{
+            $('#generate-modal-content').html('<div class="two fields"><div class="required field"><label for="poll">Nome</label><input type="text" id="poll" name="poll" value="'+data.poll+'"/></div><div class="field"><label for="dirimg">Diretório da imagem</label><input type="text" id="dirimg" name="dirimg" value="'+data.img+'"/></div></div><label for="description">Descrição</label><textarea name="description" id="description" rows="2" style="margin-top: 0px; margin-bottom: 0px; height: 58px;">'+data.description+'</textarea><div class="two fields"><div class="required field"><label for="dta_start">Início</label><input type="date" id="dta_start" name="dta_start" value="'+data.dta_start+'" placeholder="yyyy-mm-dd"/></div></div><div class="required field"><label for="dta_finish">Fim</label><input type="date" id="dta_finish" name="dta_finish" value="'+data.dta_finish+'" placeholder="yyyy-mm-dd"/></div></div></div><hr/>');
+            $('#generate-modal-content').append('Some text')
+
+        }
+        $('.ui.generate.modal').modal('show');
+    })
+    .fail(function() {
+        alert("Houve um erro ao editar a enquete");
+    });
+
+});
+/* Delete survey */
+$('.del-survey').click(function(event) {
+    var idenquete = $(this).attr('id');
+    var confirma = confirm('Deseja apagar a enquete: \"'+$(this).data('poll')+'\"');
+    if (confirma) {
+        $.ajax({
+            url: 'adm/delete',
+            type: 'GET',
+            dataType: 'html',
+            data: {idenquete: idenquete},
+        })
+        .done(function() {
+            location.reload();
+        })
+        .fail(function() {
+            alert("Houve um erro ao tentar apagar a enquete");
+        });
+    }
 });
   </script>
 </body>
