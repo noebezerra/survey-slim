@@ -91,7 +91,6 @@
                 exclusive: false
         }
     });
-
     /**********************************************
     ************* Modulo da aplícacao Angular
     */
@@ -133,7 +132,6 @@
                     total: response.data.summary.total_count,
                     goToPage: goToPage
                 });
-
                 $scope.paginate = SeverPaginate.getData();
             }
             var goToPage =  function (url) {
@@ -145,9 +143,7 @@
     /* paginação */
     // (function(){
     //     'use strict';
-
     //     var module = angular.module('app', ['Pagination']);
-
     //     module.controller('SimplePaginationCtrl', function($scope, $http, SimplePaginate) {
     //         var success = function(response) {
     //             //aqui vamos configurar a paginação
@@ -156,7 +152,6 @@
     //                 data:response.data.data,
     //                 perPage: 10
     //             });
-
     //             $scope.paginate = {
     //                 result : SimplePaginate.goToPage(0),
     //                 total : SimplePaginate.itemsTotal(),
@@ -167,13 +162,10 @@
     //                     $scope.paginate.result = SimplePaginate.prev();
     //                 }
     //             };
-
     //         }
-
     //         $http.get('http://localhost/survey/public/adm/enquete').then(success);
     //     });
     // })()
-
         // $(document).ready(function() {
         //     $('.ui.form').form({
         //         fields: {
@@ -285,7 +277,6 @@
 ********************* Bootstrap star rating - aptado para Semantic-ui 
 */
 //the $(document).ready() function is down at the bottom
-
 (function ( $ ) {
  
     $.fn.rating = function( method, options ) {
@@ -308,7 +299,6 @@
         style = style + "color:" + settings.coloroff + "; ";
         style = style + "cursor:" + settings.cursor + "; ";
     
-
         
         if (method == 'create')
         {
@@ -328,7 +318,6 @@
             
             //paint
             this.each(function() { paint($(this)); });
-
         }
         if (method == 'set')
         {
@@ -358,14 +347,13 @@
                 else { $(this).css('color',settings.coloron); }
             })
         }
-
     };
  
 }( jQuery ));
-
 /*****************************************************
-***************** Busca cálculo da accordion-adm
+***************** Área administrativa
 */
+/* Busca cálculo da accordion-adm */
 $('.accordion-adm').click(function(event) {
     var idaccordion = $(this).attr('id');
     $.ajax({
@@ -405,7 +393,6 @@ $('.accordion-adm').click(function(event) {
 var auxquestion;
 $('#new-survey').click(function(event) {
     auxquestion = 1;
-
     // exibindo data inicial
     var now = new Date();
     var day = ("0" + now.getDate()).slice(-2);
@@ -468,7 +455,6 @@ $('#new-survey').click(function(event) {
                         prompt : 'Por favor insira a data final.'
                     }]
                   },
-
                 }
             });
             // enviar quantidade de perguntas e valores- ipunts criados
@@ -505,8 +491,6 @@ $('.edit-survey').click(function(event) {
     $('#generate-modal-content').html('oi');
     $('.ui.generate.modal').modal('show');
 });
-
-
   </script>
 </body>
 

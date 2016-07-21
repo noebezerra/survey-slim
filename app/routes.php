@@ -29,6 +29,9 @@
 		$this->any('/adm/pollaccordion', 'AdmPollController:getQuestAccordion');
 		$this->any('/adm/pollaccordion/linepct', 'AdmPollController:getPctAccordion');
 		$this->any('/adm/newsurvey', 'AdmPollController:postNewSurvey');
+		$this->get('/adm/edit', 'AdmPollController:getEditSurvey');
+		$this->post('/adm/edit', 'AdmPollController:postEditSurvey');
+		$this->any('/adm/delete', 'AdmPollController:postDeleteSurvey');
 
 	})->add(new AdmMiddleware($container));
 

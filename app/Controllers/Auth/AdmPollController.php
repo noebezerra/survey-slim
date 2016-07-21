@@ -115,6 +115,88 @@
 				}
 			}
 		}
+
+		public function getEditSurvey() {
+			try {
+				$return = false;
+				// recupera id da enquete
+				$idenquete = $_GET['idenquete'];
+				$idenquete = end(explode('edit', $idenquete));
+				// recupera todos id das questões desta enquete
+				$idQuestions = PollQuestions::where('id_poll', '=', $idenquete)->select('id')->get();
+				// verifica se possui respostas dos usuários desta enquete
+				foreach ($idQuestions as $key => $value) {
+					$editAnswers = PollAnswers::where('id_question', '=', $value['id'])->first();
+					if ($editAnswers) {
+						$editDados = Polls::select(array('description', 'img', 'dta_finish'))->find($idenquete);
+						$return = true;
+						break;
+					}
+					$editDados = Polls::find($idenquete);
+					$editDadosQuestions = PollQuestions::where('id_poll', '=', $idenquete)->get();
+				}
+				$editDados = json_decode($editDados, true);
+				$editDadosQuestions = json_decode($editDadosQuestions, true);
+				// print_r( $editDadosQuestions );
+				$editDados['return'] = $return;
+				$editDados['questions'] = $editDadosQuestions;
+				$editDados = json_encode($editDados, true);
+				return $editDados;
+			} catch (Exception $e) {
+				echo $e->getMessage();
+			}
+		}
+
+		public function postEditSurvey() {
+			try {
+				$return = false;
+				// recupera id da enquete
+				$idenquete = $_GET['idenquete'];
+				$idenquete = end(explode('edit', $idenquete));
+				// recupera todos id das questões desta enquete
+				$idQuestions = PollQuestions::where('id_poll', '=', $idenquete)->select('id')->get();
+				// verifica se possui respostas dos usuários desta enquete
+				foreach ($idQuestions as $key => $value) {
+					$editAnswers = PollAnswers::where('id_question', '=', $value['id'])->first();
+					if ($editAnswers) {
+						$editDados = Polls::select(array('description', 'img', 'dta_finish'))->find($idenquete);
+						$return = true;
+						break;
+					}
+					$editDados = Polls::find($idenquete);
+					$editDadosQuestions = PollQuestions::where('id_poll', '=', $idenquete)->get();
+				}
+				$editDados = json_decode($editDados, true);
+				$editDadosQuestions = json_decode($editDadosQuestions, true);
+				// print_r( $editDadosQuestions );
+				$editDados['return'] = $return;
+				$editDados['questions'] = $editDadosQuestions;
+				$editDados = json_encode($editDados, true);
+				return $editDados;
+			} catch (Exception $e) {
+				echo $e->getMessage();
+			}
+		}
+
+		public function postDeleteSurvey() {
+			try {
+				// recupera id da enquete
+				$idenquete = $_GET['idenquete'];
+				$idenquete = end(explode('delete', $idenquete));
+				// recupera todos id das questões desta enquete
+				$idQuestions = PollQuestions::where('id_poll', '=', $idenquete)->select('id')->get();
+				// deleta respostas dos usuários desta enquete
+				foreach ($idQuestions as $key => $value) {
+					$delAnswers = PollAnswers::where('id_question', '=', $value['id'])->delete();
+				}
+				// deleta questoes desta enquete
+				$delQuestions = PollQuestions::where('id_poll', '=', $idenquete)->delete();
+				// deleta enquete
+				$delPoll = Polls::destroy($idenquete);
+			} catch (Exception $e) {
+				echo $e->getMessage();
+			}
+		}
 	}
 
 
