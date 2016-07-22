@@ -44,10 +44,21 @@
 							<button class="ui red button del-survey" id="delete{{ value.id }}" data-poll="{{ value.poll }}"><i class="trash outline icon"></i> Excluir</button>
 						</div>
 					</div>
-					<div class="content">
-						<p class="transition hidden description">Description: {{ value.description }}</p>
-							
-		  						<div class="timeelinee"></div>
+					<div class="content" id="to-pdf">
+						<div class="ui horizontal segments">
+							{% if value.poll != '' and ( value.dta_start <= ("now" | date("Y-m-d")) and value.dta_finish >= ("now" | date("Y-m-d")) ) %}<div class="ui tertiary inverted green segment">{% else %}<div class="ui tertiary inverted red segment">{% endif %}
+								<p class="transition description">Description: {{ value.description }}</p>
+							</div>
+							{% if value.poll != '' and ( value.dta_start <= ("now" | date("Y-m-d")) and value.dta_finish >= ("now" | date("Y-m-d")) ) %}<div class="ui tertiary inverted green segment">{% else %}<div class="ui tertiary inverted red segment">{% endif %}
+								<span>Save as:    </span>
+								<form action="{{ path_for('exp-excel') }}">
+									<input type="hidden" name="excel" value="excel{{value.id }}">
+									<button class="circular ui icon button exp-excel" type="submit" id="excel{{ value.id }}"><i class="file excel outline icon"></i> Excel</button>
+								</form>
+								<button class="circular ui icon button exp-pdf" id="pdf{{ value.id }}"><i class="file pdf outline icon"></i> PDF</button>
+							</div>
+						</div>
+						<div class="timeelinee"></div>
 				    </div>
 				{% endif %}
 			{% endfor %}

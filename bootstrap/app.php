@@ -101,6 +101,10 @@
 		return new \App\Controllers\Auth\AdmPollController($container);
 	};
 
+	$container['ExportController'] = function($container) {
+		return new \App\Controllers\Auth\ExportController($container);
+	};
+
 	$container['csrf'] = function($container) {
 		return new \Slim\Csrf\Guard;
 	};

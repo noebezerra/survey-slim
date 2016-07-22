@@ -32,6 +32,7 @@
 		$this->get('/adm/edit', 'AdmPollController:getEditSurvey');
 		$this->get('/adm/edit/save', 'AdmPollController:postEditSurvey');
 		$this->any('/adm/delete', 'AdmPollController:postDeleteSurvey');
+		$this->any('/adm/exp-excel', 'ExportController:postExcel')->setName('exp-excel');
 
 	})->add(new AdmMiddleware($container));
 

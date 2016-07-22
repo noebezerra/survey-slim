@@ -71,8 +71,24 @@
     <script src="{{ base_url() }}/js/star-rating.min.js"></script>  
     <!-- <script src="{{ base_url() }}/js/pagination.js"></script>    -->
     <script src="{{ base_url() }}/js/changepoll.js"></script>   
+    <!-- <script src="{{ base_url() }}/js/jspdf.min.js"></script>    -->
+    <!-- <script src="{{ base_url() }}/js/adler32cs.js"></script>    -->
+    <!-- <script src="{{ base_url() }}/js/html2canvas.js"></script>    -->
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.1.135/jspdf.min.js"></script>
+    <script type="text/javascript" src="http://cdn.uriit.ru/jsPDF/libs/adler32cs.js/adler32cs.js"></script>
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2014-11-29/FileSaver.min.js"></script> -->
+    <!-- <script type="text/javascript" src="http://cdn.immex1.com/js/jspdf/plugins/jspdf.plugin.addimage.js"></script> -->
+    <!-- <script type="text/javascript" src="http://cdn.immex1.com/js/jspdf/plugins/jspdf.plugin.standard_fonts_metrics.js"></script> -->
+    <!-- <script type="text/javascript" src="http://cdn.immex1.com/js/jspdf/plugins/jspdf.plugin.split_text_to_size.js"></script> -->
+    <!-- <script type="text/javascript" src="http://cdn.immex1.com/js/jspdf/plugins/jspdf.plugin.from_html.js"></script> -->
+    <script src="https://rawgit.com/niklasvh/html2canvas/master/dist/html2canvas.js"></script>
+<!-- <script src="https://cdn.rawgit.com/MrRio/jsPDF/master/dist/jspdf.min.js"></script> -->
+<!-- <script src="https://rawgit.com/niklasvh/html2canvas/master/dist/html2canvas.js"></script> -->
 
-	
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+
 	<script>
     /**********************************************
     ******************** Theme - design
@@ -562,6 +578,129 @@ $('.del-survey').click(function(event) {
         });
     }
 });
+/* Exportação para excel */
+$('.exp-excel').click(function(event) {
+    var idenquete = $(this).attr('id');
+    $.ajax({
+        url: 'adm/exp-excel',
+        type: 'GET',
+        dataType: 'html',
+        data: {idenquete: idenquete},
+    })
+    .done(function(data) {
+        console.log("success");
+    })
+    .fail(function() {
+        console.log("error");
+    });    
+});
+
+/* Exportação para pdf */
+/*$(function () {
+    var specialElementHandlers = {
+        '#editor': function (element,renderer) {
+            return true;
+        }
+    };
+    var a4 = [ 595.28,  841.89];
+    $('.exp-pdf').click(function () {
+        var doc = new jsPDF({
+                unit:'px', 
+                format:'a4'
+            });
+        doc.fromHTML($('.content.active').html(), 15, 15, {
+            'width': 2480, 'elementHandlers': specialElementHandlers
+        });
+        doc.setFontSize(20);
+        // doc.text(15, 100, "5");
+        // doc.addImage(imgData, 'JPEG', 20, 7, 10, 10);
+        // doc.text(40, 15, "4");
+        // doc.addImage(imgData, 'JPEG', 45, 7, 10, 10);
+        // doc.text(65, 15, "3");
+        // doc.addImage(imgData, 'JPEG', 70, 7, 10, 10);
+        // doc.text(90, 15, "2");
+        // doc.addImage(imgData, 'JPEG', 95, 7, 10, 10);
+        // doc.text(115, 15, "1");
+        // doc.addImage(imgData, 'JPEG', 120, 7, 10, 10);
+        doc.save('sample-file.pdf');
+    });  
+});*/
+
+/*$('.exp-pdf').click(function(event) {
+    var cache_width = $('.content.active').width(); //Criado um cache do CSS
+
+        // Setar o width da div no formato a4
+        $("#renderPDF").width((a4[0]*1.33333) -80).css('max-width','none');
+
+        // Aqui ele cria a imagem e cria o pdf
+        html2canvas($('.content.active'), {
+          onrendered: function(canvas) {
+            var img = canvas.toDataURL("image/png",1.0);  
+            var doc = new jsPDF({unit:'px', format:'a4'});
+            doc.addImage(img, 'JPEG', 20, 20);
+            doc.save('NOME-DO-PDF.pdf');
+            //Retorna ao CSS normal
+            $('#renderPDF').width(cache_width);
+          }
+        });
+    });
+    function getPDF(){
+}
+*/
+
+// $('.exp-pdf').click(function() {
+//     // // var a4  =[ 595.28,  841.89]; // Widht e Height de uma folha a4
+//     /*var doc = new jsPDF('p','pt','a4');
+//     doc.addHTML($('.content.active'), function() {
+//         doc.save("teste.pdf");
+//     });*/
+
+//     var pdf = new jsPDF('p','pt','a4');
+
+//     pdf.addHTML($('.content.active'), function() {
+//         var string = pdf.output('datauristring');
+//         var iframe = document.createElement("iframe");
+
+//         iframe.src = string;
+//         document.body.appendChild(iframe);
+//         pdf.save('teste.pdf');
+//     });
+// });
+
+/*(function(){
+    var 
+     form = $('.form'),
+     cache_width = form.width(),
+     a4  =[ 595.28,  841.89];  // for a4 size paper width and height
+ 
+    $('.exp-pdf').on('click',function(){
+        $('.content.active').scrollTop(0);
+        createPDF();
+    });
+    //create pdf
+    function createPDF(){
+        getCanvas().then(function(canvas){
+            var 
+            img = canvas.toDataURL("image/png"),
+            doc = new jsPDF({
+              unit:'px', 
+              format:'a4'
+            });     
+            doc.addImage(img, 'JPEG', 20, 20);
+            doc.save('techumber-html-to-pdf.pdf');
+            form.width(cache_width);
+        });
+    }
+    // create canvas object
+    function getCanvas(){
+        form.width((a4[0]*1.33333) -80).css('max-width','none');
+        return html2canvas(form,{
+            imageTimeout:2000,
+            removeContainer:true
+        }); 
+    }
+ 
+}());*/
   </script>
 </body>
 
