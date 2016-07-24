@@ -2,48 +2,50 @@
 
 {% block content %}
 
-	<div class="ui middle aligned center aligned grid">
-		<div class="column">
-			<h2 class="ui teal image header">
-				<div class="content">
-				  Change to your password
-				</div>
-			</h2>
-			<form class="ui large form error" action="{{ path_for('auth.password.change') }}" method="post">
-				<div class="ui stacked segment">
-					<div class="field  {{ errors.password_old ? 'error' : '' }}">
-						<div class="ui left icon input">
-							<i class="lock icon"></i>
-							<input type="password" name="password_old" id="password_old" placeholder="Current password">
-						</div>
+	<div class="change-password">
+		<div class="ui middle aligned center aligned grid">
+			<div class="column">
+				<h2 class="ui teal image header">
+					<div class="content">
+					  Alterar senha
 					</div>
-					<div class="field  {{ errors.password ? 'error' : '' }}">
-						<div class="ui left icon input">
-							<i class="lock icon"></i>
-							<input type="password" name="password" id="password" placeholder="New password">
+				</h2>
+				<form class="ui large form error" action="{{ path_for('auth.password.change') }}" method="post">
+					<div class="ui stacked segment">
+						<div class="field  {{ errors.password_old ? 'error' : '' }}">
+							<div class="ui left icon input">
+								<i class="lock icon"></i>
+								<input type="password" name="password_old" id="password_old" placeholder="Senha antiga">
+							</div>
 						</div>
+						<div class="field  {{ errors.password ? 'error' : '' }}">
+							<div class="ui left icon input">
+								<i class="lock icon"></i>
+								<input type="password" name="password" id="password" placeholder="Nova senha">
+							</div>
+						</div>
+						<button class="ui fluid large teal button" type="submit">Change Password</button>
 					</div>
-					<button class="ui fluid large teal button" type="submit">Change Password</button>
-				</div>
-				
-				<div class="ui error message"></div>
-				
+					
+					<div class="ui error message"></div>
+					
 
-				{{ csrf.field | raw }}
+					{{ csrf.field | raw }}
 
-				{% if errors %}
-				<div class="ui error message">
-					<ul class="ui list">
-						{% if errors.password %}
-							<li>{{ errors.password | first }}</li>	
-						{% endif %}	
-						{% if errors.password_old %}
-							<li>{{ errors.password_old | first }}</li>	
-						{% endif %}		
-					</ul>
-				</div>
-				{% endif %}
-			</form>
+					{% if errors %}
+					<div class="ui error message">
+						<ul class="ui list">
+							{% if errors.password %}
+								<li>{{ errors.password | first }}</li>	
+							{% endif %}	
+							{% if errors.password_old %}
+								<li>{{ errors.password_old | first }}</li>	
+							{% endif %}		
+						</ul>
+					</div>
+					{% endif %}
+				</form>
+			</div>
 		</div>
 	</div>
 

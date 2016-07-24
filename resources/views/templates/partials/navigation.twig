@@ -3,7 +3,7 @@
     <div class="ui container">
       <div class="left item">
         <a href="#" class="toc item"><i class="sidebar icon"></i> Menu</a>
-        <img src="{{ base_url() }}/img/surveylogobranco.png" alt="Survey">
+        <img src="{{ base_url() }}/img/newlogo.png" alt="Survey">
       </div>
       <div class="rigth item">
         <!-- menu bar -->
@@ -14,9 +14,9 @@
           {{ auth.user.name }}
           <i class="dropdown icon"></i>
           <div class="menu">
-            <a class="item"><i class="edit icon"></i> Edit Profile</a>
-            <a class="item"><i class="globe icon"></i> Choose Language</a>
-            <a class="item" href="{{ path_for('auth.password.change') }}" ><i class="settings icon"></i> Account Settings</a>
+            <!-- <a class="item"><i class="edit icon"></i> Edit Profile</a> -->
+            <!-- <a class="item"><i class="globe icon"></i> Choose Language</a> -->
+            <a class="item" href="{{ path_for('auth.password.change') }}" ><i class="settings icon"></i> Alterar senha</a>
           </div>
         </div>
         <a class="ui item" href="{{ path_for('auth.signout') }}">Sair </a>
@@ -31,7 +31,7 @@
         <div class="ui secondary inverted top large pointing menu">
           <div class="left item">
             <a href="#" class="toc item"><i class="sidebar icon"></i> Menu</a>
-            <img src="{{ base_url() }}/img/surveylogobranco.png" alt="Survey">
+            <img src="{{ base_url() }}/img/newlogo.png" alt="Survey">
           </div>
           <div class="rigth item">
             <!-- menu bar -->

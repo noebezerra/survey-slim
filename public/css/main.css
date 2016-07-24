@@ -28,14 +28,14 @@ body.grid {
 ********************* Loged
 */
 .menu.loged {
-  background-color: #9c27b0 !important;
+  background-color: #000 !important;
 }
 
 /*****************************************************
 ********************* Content
 */
 .landing {
-  background: url("../img/surveybg.svg") center #9c27b0 no-repeat !important;
+  background: url("../img/bgnoturno.jpg") center #000 no-repeat !important;
   background-size: cover;
   -webkit-background-size: cover; /* SAFARI / CHROME */
   -moz-background-size: cover; /* FIREFOX */
@@ -48,7 +48,7 @@ body.grid {
 }
 .transbg {
   min-height: 680px;
-  background: rgba(128, 0, 128, 0.655);
+  background: rgba(0, 0, 0, 0.3);
 }
 .menu {
   border: 0px !important;
@@ -147,6 +147,9 @@ footer .footerlogo {
 /*****************************************************
 *********************** Page Administrative
 */
+.adm {
+  min-height: 51.5vh;
+}
 .description {
   margin: 20px;
 }
@@ -155,6 +158,9 @@ footer .footerlogo {
 }
 .content.active {
   background-color: #fff;
+}
+.form-excel {
+  float: right;
 }
 
 /****************************************************
@@ -276,4 +282,12 @@ footer .footerlogo {
   position: absolute;
   left: 40px;
   font-weight: bold;
+}
+
+/**************************************
+**************** change-password
+*/
+.change-password {
+  margin-top: 43px;
+  min-height: 50vh;
 }

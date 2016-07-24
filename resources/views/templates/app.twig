@@ -19,9 +19,9 @@
           <li class="item welcome-menu">Bem vindo {{ auth.user.name }}</li>
           <a class="item" href="{{ path_for('home') }}">Home</a>
           {% if auth.user.id_level_user == 2 %}<a class="item" href="{{ path_for('adm') }}"><i class="pie chart icon"></i> Adm</a>{% endif %}
-          <a class="item">Edit Profile</a>
-          <a class="item">Choose Language</a>
-          <a class="item" href="{{ path_for('auth.password.change') }}" >Account Settings</a>
+          <!-- <a class="item">Edit Profile</a> -->
+          <!-- <a class="item">Choose Language</a> -->
+          <a class="item" href="{{ path_for('auth.password.change') }}" >Alterar senha</a>
           <a class="ui item" href="{{ path_for('auth.signout') }}">Sair </a>
         </div>
     {% else %}
@@ -45,7 +45,7 @@
             <div class="ui container">
               <div class="ui stackable equal width grid">
                 <div class="column">
-                    <img class="footerlogo" src="{{ base_url() }}/img/surveylogobranco.png" alt="Survey"> BETA
+                    <img class="footerlogo" src="{{ base_url() }}/img/newlogo.png" alt="Survey"> BETA
                 </div>
                 <div class="column">
                   <p>Survey - 2016 - Sistema de enquete</p>
@@ -648,24 +648,24 @@ $('.exp-excel').click(function(event) {
 }
 */
 
-// $('.exp-pdf').click(function() {
-//     // // var a4  =[ 595.28,  841.89]; // Widht e Height de uma folha a4
-//     /*var doc = new jsPDF('p','pt','a4');
-//     doc.addHTML($('.content.active'), function() {
-//         doc.save("teste.pdf");
-//     });*/
+$('.exp-pdf').click(function() {
+    // // var a4  =[ 595.28,  841.89]; // Widht e Height de uma folha a4
+    /*var doc = new jsPDF('p','pt','a4');
+    doc.addHTML($('.content.active'), function() {
+        doc.save("teste.pdf");
+    });*/
 
-//     var pdf = new jsPDF('p','pt','a4');
+    var pdf = new jsPDF('p','pt','a4');
 
-//     pdf.addHTML($('.content.active'), function() {
-//         var string = pdf.output('datauristring');
-//         var iframe = document.createElement("iframe");
+    pdf.addHTML($('.content.active'), function() {
+        var string = pdf.output('datauristring');
+        var iframe = document.createElement("iframe");
 
-//         iframe.src = string;
-//         document.body.appendChild(iframe);
-//         pdf.save('teste.pdf');
-//     });
-// });
+        iframe.src = string;
+        document.body.appendChild(iframe);
+        pdf.save('teste.pdf');
+    });
+});
 
 /*(function(){
     var 

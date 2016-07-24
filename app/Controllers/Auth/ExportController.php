@@ -8,8 +8,9 @@
 
 	use App\Controllers\Controller;
 
-	
-	// require_once '../../../public/index.php';
+	require dirname(__FILE__).'/../../../vendor/phpexcel/phpexcel/Classes/PHPExcel.php';
+
+	use vendor\phpexcel\phpexcel\Classes;
 	/**
 	* 
 	*/
