@@ -49,7 +49,6 @@
 
 			    break;
 			}
-
 		}
 
 		public function postPoll() {
@@ -64,6 +63,10 @@
 			}
 			$result .= ']';
 			echo $qtdperguntas.' '.$result;
+		}
+
+		public function getAccordion($request, $response) {
+			return $this->view->render($response, 'templates/partials/accordion.twig');
 		}
 
 

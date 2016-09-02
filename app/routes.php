@@ -9,10 +9,12 @@
 
 	$app->any('/poll/pollanswers', 'PollController:postPollAnswers');
 	$app->any('/poll/pollquestions', 'PollController:getPollQuestions');
+
 	
 	$app->group('', function() {
 
 		$this->get('/', 'HomeController:index')->setName('home');
+		$this->any('/tplaccordion', 'HomeController:getAccordion')->setName('tplaccordion');
 
 	})->add(new GuestMiddleware($container));
 	

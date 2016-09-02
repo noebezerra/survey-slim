@@ -6,32 +6,73 @@
 	<div class="ui container" >
 		<div class="adm">
 			<button class="ui inverted green button" id="new-survey"><i class="plus icon"></i>NEW SURVEY</button>
-			<!-- <label for="">Busca: <input type="text" ng-model="searchPoll" placeholder="Pesquisar"></label> -->
-			
-			<!-- <div class="ui styled fluid accordion" ng-repeat="survey in allsurvey | filter: searchPoll">
-				<div class="title">
-					<span class="trigger accordion-adm" id="accordion{[{ survey.id }]}">
-						<i class="dropdown icon"></i> {[{ survey.poll }]} - <span class="ui right floated" style="color: green">OPEN</span>
-					</span>
-					<div class="ui right floated icon mini buttons">
-						<button class="ui yellow button edit-survey"><i class="write icon"></i> Editar</button>
-						<button class="ui red button"><i class="trash outline icon"></i> Excluir</button>
+							<div class="ui search">
+							  <input class="prompt" placeholder="Common passwords..." type="text">
+							  <div class="results"></div>
+							</div>
+			<div style="float: right"><input type="text" placeholder="Pesquisar..."> <button class="circular ui icon button"><i class="search icon"></i></button></div>
+
+		<!-- 	<div ng-controller = "ListSurvey">
+				<label for="">Busca: <input type="text" ng-model="searchPoll" placeholder="Pesquisar"></label>
+				
+
+				<ui-accordions>
+					<ui-accordion class="accordion-adm" id="accordion{[{ survey.id }]}" title="{[{ survey.poll }]}">
+						<p>Description: {[{ survey.description }]}</p>
+						<div class="timeelinee"></div>
+					</ui-accordion>
+				</ui-accordions>
+				
+				
+
+
+
+				<div class="ui styled fluid accordion">
+					<div ng-repeat="survey in allsurvey | filter: searchPoll">
+						<div class="title">
+							<span class="trigger accordion-adm" id="accordion{[{ survey.id }]}">
+								<i class="dropdown icon"></i> {[{ survey.poll }]} - <span class="ui right floated" style="color: red">CLOSE</span>
+							</span>
+							<div class="ui right floated icon mini buttons">
+								<button class="ui yellow button edit-survey" id="edit{[{ survey.id }]}"><i class="write icon"></i> Editar</button>
+								<button class="ui red button del-survey" id="delete{{ survey.id }}" data-poll="{{ survey.poll }}"><i class="trash outline icon"></i> Excluir</button>
+							</div>
+						</div>
+						<div class="content" id="to-pdf">
+							<div class="ui horizontal segments">
+								<div class="ui tertiary inverted red segment">
+									<p class="transition description">Description: {[{ survey.description }]}</p>
+								</div>
+								<div class="ui tertiary inverted red segment">
+									<span>Save as:    </span>
+									<form class="form-excel" action="{{ path_for('exp-excel') }}" method="get">
+										<input type="hidden" name="excel" value="excel{[{survey.id }]}">
+										<button class="circular ui icon button exp-excel" type="submit" id="excel{[{ survey.id }]}"><i class="file excel outline icon"></i> Excel</button>
+									</form>
+									<button class="circular ui icon button exp-pdf" id="pdf{[{ survey.id }]}"><i class="file pdf outline icon"></i> PDF</button>
+								</div>
+							</div>
+							<div class="timeelinee"></div>
+					    </div>
 					</div>
 				</div>
-				<div class="content">
-					<p class="transition hidden description">Description: {[{ survey.description }]}</p>
-					<div class="timeelinee"></div>
-			    </div>
-			</div>
 
-			<ul>
-	            <li>
-	                <a href="" ng-click="paginate.prev()"><span aria-hidden="true">Anterior</span></a>
-	            </li>
-	            <li>
-	                <a href="" ng-click="paginate.next()"><span aria-hidden="true">Próximo</span></a>
-	            </li>
-	        </ul> -->
+
+
+
+
+				<ul>
+		            <li>
+		                <a href="" ng-click="paginate.prev()"><span aria-hidden="true">Anterior</span></a>
+		            </li>
+		            <li>
+		                <a href="" ng-click="paginate.next()"><span aria-hidden="true">Próximo</span></a>
+		            </li>
+		        </ul>
+			</div> -->
+
+
+
 
 			<div class="ui styled fluid accordion">
 				{% for key, value in _context %}
@@ -52,11 +93,11 @@
 								</div>
 								{% if value.poll != '' and ( value.dta_start <= ("now" | date("Y-m-d")) and value.dta_finish >= ("now" | date("Y-m-d")) ) %}<div class="ui tertiary inverted green segment">{% else %}<div class="ui tertiary inverted red segment">{% endif %}
 									<span>Save as:    </span>
-									<!-- <form class="form-excel" action="{{ path_for('exp-excel') }}" method="get">
+									<form class="form-excel" action="{{ path_for('exp-excel') }}" method="get">
 										<input type="hidden" name="excel" value="excel{{value.id }}">
 										<button class="circular ui icon button exp-excel" type="submit" id="excel{{ value.id }}"><i class="file excel outline icon"></i> Excel</button>
-									</form> -->
-										<button class="circular ui icon button exp-excel" type="submit" id="excel{{ value.id }}"><i class="file excel outline icon"></i> Excel</button>
+									</form>
+										<!-- <button class="circular ui icon button exp-excel" type="submit" id="excel{{ value.id }}"><i class="file excel outline icon"></i> Excel</button> -->
 									<button class="circular ui icon button exp-pdf" id="pdf{{ value.id }}"><i class="file pdf outline icon"></i> PDF</button>
 								</div>
 							</div>

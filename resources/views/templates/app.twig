@@ -11,7 +11,7 @@
 </head>
 
 <!-- Iniciando minha aplicacao com ng-app -->
-<body>
+<body ng-app="survey">
     
     <!-- side bar mobile -->
     {% if auth.check %}
@@ -66,10 +66,8 @@
     </div>
 
 	<script src="{{ base_url() }}/js/jquery-2.2.3.min.js"></script>
-    <!-- <script src="{{ base_url() }}/js/angular.min.js"></script>   -->
     <script src="{{ base_url() }}/js/semantic.min.js"></script>     
     <script src="{{ base_url() }}/js/star-rating.min.js"></script>  
-    <!-- <script src="{{ base_url() }}/js/pagination.js"></script>    -->
     <script src="{{ base_url() }}/js/changepoll.js"></script>   
     <!-- <script src="{{ base_url() }}/js/jspdf.min.js"></script>    -->
     <!-- <script src="{{ base_url() }}/js/adler32cs.js"></script>    -->
@@ -89,6 +87,8 @@
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
 
+    <script src="{{ base_url() }}/js/angular.min.js"></script>  
+    <script src="{{ base_url() }}/js/pagination.js"></script>   
 	<script>
     /**********************************************
     ******************** Theme - design
@@ -110,29 +110,51 @@
     /**********************************************
     ************* Modulo da aplícacao Angular
     */
-        /*angular.module('survey', ['Pagination'])
+        angular.module('survey', ['Pagination'])
         .config(function ($interpolateProvider) {
             $interpolateProvider.startSymbol('{[{').endSymbol('}]}');
         })
-        .controller('TitleController', TitleController)
-        .controller('HelloWorld', HelloWorld)
+        .directive('uiAccordions', function () {
+            return {
+                controller: function ($scope, $element, $attrs) {
+                    var accordions = [];
+                    this.registerAccordion = function (accordion) {
+                        accordions.push(accordion);
+                    };
+
+                    this.closeAll = function () {
+                        accordions.forEach(function (accordion) {
+                            accordion.isOpened = false;
+                        });
+                    }
+                }
+            }
+        })
+        .directive('uiAccordion', function () {
+            return{
+                templateUrl: 'tplaccordion',
+                transclude: true,
+                scope: {
+                    title: '@'
+                },
+                require: '^uiAccordions',
+                link: function (scope, element, attrs, ctrl) {
+                    ctrl.registerAccordion(scope);
+                    scope.open = function () {
+                        if (scope.isOpened) {
+                            scope.isOpened = false;
+                        } else {
+                            ctrl.closeAll();
+                            scope.isOpened = true;
+                        }
+                    }
+                }
+            }
+        })
         .controller('ListSurvey', ListSurvey)
         .controller('SimplePaginationCtrl', SimplePaginationCtrl);
-        function TitleController() {
-            var vm = this;
-            vm.titulo = "Teste controller em Angular.js";
-            vm.users = [
-                {name: 'Ygo', email: 'ygo@email.com'},
-                {name: 'Noe', email: 'noe@email.com'}
-            ];
-        }
-        function HelloWorld() {
-            var vm = this;
-            vm.message = "HelloWorld";
-        }
         function ListSurvey($scope, $http) {
             $http.get('http://localhost/survey/public/adm/enquete').success(function(data) {
-                // var vm = this;
                 $scope.allsurvey = data;
                 console.log($scope.allsurvey);
             })
@@ -154,7 +176,8 @@
                 $http.get(url).then(success);
             }
             $goToPage('http://localhost/survey/public/adm/enquete');
-        }*/
+        }
+
         
     /* paginação */
     // (function(){
@@ -369,6 +392,8 @@
 /*****************************************************
 ***************** Área administrativa
 */
+
+
 /* Busca cálculo da accordion-adm */
 $('.accordion-adm').click(function(event) {
     var idaccordion = $(this).attr('id');
